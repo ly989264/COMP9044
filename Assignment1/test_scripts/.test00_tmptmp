@@ -1,0 +1,48 @@
+legit-add: error: no .legit directory containing legit repository exists
+1
+legit-commit: error: no .legit directory containing legit repository exists
+1
+legit-log: error: no .legit directory containing legit repository exists
+1
+legit-commit: error: no .legit directory containing legit repository exists
+1
+legit-commit: error: no .legit directory containing legit repository exists
+1
+usage: legit-init
+1
+Initialized empty legit repository in .legit
+0
+legit-init: error: .legit already exists
+1
+nothing to commit
+0
+legit-log: error: your repository does not have any commits yet
+1
+legit-show: error: 'a' not found in index
+1
+legit-show: error: unknown commit '0'
+1
+0
+legit-log: error: your repository does not have any commits yet
+1
+0
+legit-show: error: unknown commit '0'
+1
+legit-show: error: 'c' not found in index
+1
+Committed as commit 0
+0
+0 this-is-the-normal-commit
+0
+0
+0
+legit-show: error: unknown commit '1'
+1
+legit-show: error: 'c' not found in index
+1
+nothing to commit
+0
+legit-add: error: can not open 'non-exist-file'
+1
+legit-show: error: 'non-exist-file' not found in index
+1

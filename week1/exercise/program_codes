@@ -1,0 +1,1798 @@
+0350 Medicine (Prince Henry/POW)
+0351 Medicine (SWS Clinical School)
+0352 Medicine (St George)
+0353 Medicine (St Vincent's)
+0360 Pathology
+0370 Physiology and Pharmacology
+0375 Rural Health
+0380 Obstetrics and Gynaecology
+0390 Psychiatry
+0400 Surgery (Prince Henry/POW)
+0401 Surgery (SWSAHS)
+0402 Surgery (St George Clin Schl)
+0403 Surgery (St Vincent's)
+0410 Paediatrics
+0430 Community Medicine
+0440 Psychiatry and Pathology
+0450 Health Services Management
+1000 Applied Geology
+1001 Cotutelle
+1002 Joint PhD (U21)
+1004 Joint PhD
+1010 Chemical Engineering
+1015 Chem Eng & Industrial Chem
+1016 Industrial Chemistry
+1017 Petroleum Engineering
+1031 Food Science and Technology
+1035 Biotechnology
+1036 Biotechnology
+1045 Materials Sc and Engineering
+1046 Mineral Processing
+1050 Mining Engineering
+1060 Textile Technology
+1071 Wool and Animal Science
+1080 Geography
+1081 Geography and Oceanography
+1082 Oceanography
+1099 PhD Research (ADFA)
+1120 Built Environment
+1125 Industrial Design
+1130 Architecture
+1140 Building
+1150 Town Planning
+1181 Theatre, Film and Dance
+1182 Theatre, Film, Dance & Media
+1185 Theatre, Film, Art Hist & Theo
+1190 Australian Studies
+1199 PhD Research (Built Env)
+1200 English
+1201 English
+1203 Indonesian
+1204 English & Theatre & Film Stud
+1205 English and History
+1206 English & Span and Latin Amer
+1207 English and Linguistics
+1208 Linguistics
+1210 French
+1211 Environmental Policy and Mgmt
+1212 Int Stud&Global Transformation
+1215 Health, Sexuality and Culture
+1221 Japanese Studies
+1223 Korean Studies
+1225 Chinese Studies
+1226 Chinese Studies & Linguistics
+1228 Indonesian Studies
+1231 German Studies
+1232 German Studies and Film Studie
+1235 European Studies
+1238 Modern Greek Studies
+1240 History
+1241 History
+1243 History and European Studies
+1245 Media, Film and Theatre
+1250 Hist. & Philosophy of Science
+1251 Science and Technology Studies
+1257 Sc & Tech Stud & Philosophy
+1258 Sc & Tech Stud & Law
+1260 Philosophy
+1261 Philosophy and Psychiatry
+1265 Professional Ethics
+1270 Politics & Internat'l Relation
+1271 Humanities
+1272 Social Sciences
+1273 Creative Practice
+1275 Soc Sc & Policy/Women's Stud
+1277 Women's Studies and English
+1280 Music
+1281 Music Education
+1282 Music/Science & Tech Studies
+1283 College of Fine Arts
+1285 Art Education
+1286 Art Theory
+1287 Fine Arts
+1288 Design
+1289 Media Arts
+1291 Russian Studies
+1292 PhD Art, Design and Media
+1295 Social Science and Policy
+1296 Social Policy
+1297 Criminology
+1299 PhD Research (Arts & Soc Sc)
+1300 Sociology
+1303 Sociology/Media, Film, Theatre
+1305 Women's Studies
+1306 Women's Studies and Philosophy
+1310 Spanish & Latin American Stud
+1311 Span/Latin American & History
+1321 Politics
+1350 Management
+1399 PhD Research (CFA)
+1400 Psychology
+1402 Psychology (Clinical)
+1404 Psychology (Clinical)
+1405 Psychology (Forensic)
+1406 Psychology (Organisational)
+1410 Biochem & Molecular Genetics
+1425 Environmental Management
+1435 Biological Science
+1440 Microbiology and Immunology
+1450 Zoology
+1476 Climate Science
+1487 Vision Science
+1499 PhD Research (Life Sciences)
+1500 Doctor of Philosophy
+1520 Accountancy
+1521 Accounting
+1525 Information Systems
+1532 Strategy and Entrepreneurship
+1535 Business Law and Taxation
+1540 Economics
+1541 Economics and Management
+1543 Economics & Industrial Relatio
+1545 Actuarial Studies
+1550 Marketing
+1561 Banking and Finance
+1599 PhD Research (Comm & Econ)
+1601 Industrial Relations & Org Beh
+1603 International Business
+1605 Organisation and Management
+1615 Project Management
+1630 Civil & Environmental Eng
+1631 Civil Engineering
+1635 Civil & Env Eng & Geography
+1640 Electrical Engineering
+1641 Elec. Engineering and Comp. Sc
+1642 Electrical and Electronic Eng
+1643 Electrical Engineering
+1650 Computer Science and Eng
+1655 Photovoltaic Engineering
+1660 Mechanical and Industrial Eng
+1661 Mechanical Engineering
+1662 Mechanical & Manufacturing Eng
+1663 Aerospace Engineering
+1665 Safety Science
+1680 Surveying
+1681 Surveying & Spatial Info Sys
+1699 PhD Research (Engineering)
+1710 Biomedical Engineering
+1715 Biomedical Eng/Medicine
+1730 Law
+1740 Juridical Science
+1741 Systems Engineering
+1742 Project Management
+1743 Information Technology
+1745 Taxation
+1750 Anatomy
+1752 Anatomy and Psychology
+1753 Anatomy and Surgery
+1755 Community Med & Psychiatry
+1760 Community Medicine
+1765 Community Med & Sociology
+1770 Medicine (POW Clinical School)
+1771 Medicine (SWS Clinical School)
+1772 Medicine (St George Clin Schl)
+1773 Medicine (St Vincent's Cl Sch)
+1774 Kirby Institute
+1775 Aust Inst of Health Innovation
+1780 Pathology
+1790 Physiology and Pharmacology
+1795 Rural Health
+1799 PhD Research (Law)
+1800 Psychiatry
+1810 Surgery (POW Clinical School)
+1811 Surgery (SWS Clinical School)
+1812 Surgery (St George)
+1813 Surgery (St Vincent's Cl Sch)
+1820 Obstetrics and Gynaecology
+1830 Paediatrics
+1835 Public Health & Community Med
+1836 Public Health
+1841 Medical Education
+1860 Optometry
+1870 Chemistry
+1871 Chemistry
+1880 Mathematics
+1881 Mathematics & Statistics
+1885 Computer Science
+1890 Physics
+1891 Theoretical Physics
+1892 Physics
+1893 Information Technology
+1899 PhD Research (Medicine)
+1900 Aviation
+1930 Sport and Leisure Studies
+1940 Teacher Education
+1950 Health Administration
+1970 Education Studies
+1975 Education
+1980 Social Work
+1990 Info, Library & Archive Stud
+1999 PhD Research (Science)
+2000 Applied Geology
+2010 Chemical Engineering
+2015 Chemical Engineering
+2016 Industrial Chemistry
+2031 Food Science and Technology
+2035 Biological Technologies
+2036 Biotechnology
+2040 Geography
+2041 Geography
+2046 Mineral Processing
+2050 Metallurgy
+2055 Materials Sc and Engineering
+2060 Mining Engineering
+2070 Textile Technology
+2080 Wool and Pastoral Sciences
+2081 Wool and Animal Science
+2150 Chemical Engineering
+2155 Chemical Engineering
+2156 Petroleum Engineering
+2175 Materials Sc and Engineering
+2180 Mining Engineering
+2185 Mines
+2200 Architecture
+2201 Built Environment
+2206 Architecture
+2210 Building
+2220 Landscape Architecture
+2222 Built Environment
+2225 Humanities & Social Sciences
+2226 Business
+2227 Aerospace, Civil & Mech Eng
+2228 Info Tech & Electrical Eng
+2229 Physical, Environ & Math Sci
+2230 Town Planning
+2240 Built Environment
+2242 Industrial Design
+2245 Fine Arts
+2255 Art Education
+2260 Drama
+2261 Theatre, Film and Dance
+2264 Art Administration
+2265 Art Theory
+2266 Design
+2267 Fine Arts
+2280 English
+2281 English
+2288 English and Theatre and Film
+2290 French
+2295 Chinese Studies
+2298 Modern Greek
+2301 Geography and Oceanography
+2311 German Studies
+2320 History
+2321 History
+2325 History
+2330 Hist. & Philosophy of Science
+2331 Science and Technology Studies
+2332 Science and Society
+2335 Interdisciplinary Studies
+2336 Interdisciplinary Studies
+2337 Australian Studies
+2338 Linguistics
+2339 Women's Studies
+2340 Mathematics
+2345 Media & Communication Studies
+2348 Music
+2349 Music Education
+2350 Philosophy
+2353 Arts
+2354 Education
+2355 Educational Administration
+2356 Music
+2357 Music Education
+2358 Social Science
+2359 Higher Education
+2360 Political Science
+2365 Professional Ethics
+2375 Social Science and Policy
+2380 Sociology
+2385 Sociology
+2390 Spanish & Latin American Stud
+2393 Arts
+2394 Education
+2395 Educational Administration
+2396 Music
+2397 Music Education
+2398 Social Science
+2401 Politics
+2405 Arts
+2406 Arts
+2410 Cognitive Science
+2440 Law
+2450 Psychology
+2455 Taxation
+2460 Biochem & Molecular Genetics
+2475 Science
+2476 Climate Sciences
+2480 Botany
+2485 Biological Science
+2487 Vision Science
+2490 Microbiology and Immunology
+2500 Zoology
+2515 Medicine
+2525 Organisational Behaviour
+2530 Marketing
+2570 Accounting
+2571 Economics
+2572 Econometrics
+2573 Economic History
+2574 Banking and Finance
+2575 Info Systems and Management
+2576 Industrial Relations
+2577 Organisational Behaviour
+2578 Human Resource Management
+2579 Business Law and Taxation
+2580 Marketing
+2582 Actuarial Studies
+2585 Commerce & Economics
+2590 Economic History
+2600 Econometrics
+2630 Accountancy
+2631 Banking and Finance
+2632 Information Systems
+2640 Economics
+2650 Civil & Environmental Eng
+2651 Civil Engineering
+2655 Photovoltaic Engineering
+2660 Electrical Engineering
+2661 Elec. Engineering and Comp. Sc
+2663 Electrical Engineering
+2665 Computer Science and Eng
+2670 Highway Engineering
+2675 Biomedical Engineering
+2685 Engineering
+2690 Mechanical and Industrial Eng
+2691 Mechanical Engineering
+2692 Mechanical & Manufacturing Eng
+2693 Aerospace Engineering
+2695 Safety Science
+2699 Masters Research (Engineering)
+2712 Forensic Mental Health
+2713 Public Health
+2720 Surveying
+2721 Surveying & Spatial Info Sys
+2750 Civil Engineering
+2760 Electrical Engineering
+2765 Computer Science and Eng
+2771 Medicine (Kirby)
+2772 Medicine (AIHI)
+2775 Safety Science
+2795 Biomedical Engineering
+2800 Anatomy
+2805 Paediatrics
+2810 Community Medicine
+2820 Medicine (POW Clinical School)
+2821 Medicine (SWS Clinical School)
+2822 Medicine (St George Clin Schl)
+2823 Medicine (St Vincent's Cl Sch)
+2825 Medicine (POW)
+2826 Medicine (SWSAHS)
+2828 Medicine (St Vincent's)
+2830 Obstetrics and Gynaecology
+2835 Rural Health
+2840 Pathology
+2845 Public Health
+2850 Physiology and Pharmacology
+2855 Community Health
+2860 Surgery (POW Clinical School)
+2861 Surgery (SWS Clinical School)
+2862 Surgery (St George)
+2863 Surgery (St Vincent's)
+2875 Surgery (POW Clinical School)
+2876 Surgery (SWS Clinical School)
+2877 Surgery (St George)
+2878 Surgery (St Vincent's)
+2880 Psychiatry
+2885 Health Professions Education
+2899 Master Research (Medicine)
+2900 Optometry
+2905 Aviation
+2910 Chemistry
+2911 Chemistry
+2920 Mathematics
+2921 Mathematics & Statistics
+2925 Computer Science
+2930 Physics
+2931 Physics
+2932 Theoretical Physics
+2945 Educational Administration
+2960 Health Administration
+2970 Social Work
+2980 Information Studies
+2985 Archives Administration
+2990 Education
+2998 Sports Science
+2999 Master Research (Science)
+3000 Applied Geology
+3010 Applied Geography
+3020 Ceramic Engineering
+3025 Ceramic Engineering
+3030 Ceramics
+3040 Chemical Engineering
+3041 Chemical Engineering/Commerce
+3042 Chemical Eng/Science
+3043 Chemical Engineering/Arts
+3045 Petroleum Engineering
+3046 Petroleum Eng/Chemical Eng
+3047 Petroleum Engineering/Science
+3048 Chemical Eng/Biomedical Eng
+3050 Chemical Engineering
+3052 Biotechnology
+3053 Biotechnology (Honours)
+3055 Bioprocess Engineering
+3060 Food Science and Technology
+3065 Food Science
+3070 Food Science and Technology
+3100 Industrial Chemistry
+3101 Industrial Chemistry/Commerce
+3102 Industrial Chemistry/Science
+3103 Industrial Chemistry/Arts
+3110 Industrial Chemistry
+3120 Metallurgy
+3125 Metallurgical Engineering
+3126 Mineral Engineering
+3130 Metallurgy
+3131 Mat Sci and Eng Hons
+3132 Mat Sci and Eng Hons/Eng Sci
+3133 Mat Sci and Eng Hons/BiomedEng
+3134 Mat Sci and Eng Hons/Commerce
+3135 Mat Sci and Eng
+3136 Mat Sci and Eng / Commerce
+3137 Materials Sc / Chemical Eng
+3138 Mat Sci and Eng/BiomedEng
+3140 Mining Engineering
+3142 Mining Engineering/Science
+3144 Mining Engineering/Arts
+3146 Civil Eng/Mining Eng
+3154 Actuarial Studies / Science
+3155 Actuarial Studies / Commerce
+3170 Textile Technology
+3175 Textile Management
+3177 Textile Design and Technology
+3220 Wool and Pastoral Sciences
+3229 Wool Technology
+3255 Interior Architecture
+3256 Interior Architecture (Hons)
+3260 Architecture
+3261 Architectural Studies
+3262 Architecture/Arts
+3263 Architecture / Social Science
+3265 Science Architecture
+3266 Architecture/Commerce
+3267 Architectural Computing
+3268 Computational Design
+3270 Architecture
+3275 Architecture
+3280 Architecture
+3290 Architecture
+3295 Architecture
+3300 Architecture
+3320 Industrial Arts Education
+3330 Building
+3331 Construction Mngt & Property
+3350 Diploma
+3360 Planning
+3365 Town Planning/Commerce
+3370 Architecture
+3380 Landscape Architecture
+3381 Landscape Architecture (Hons)
+3385 Diploma of Prof. Practice
+3386 Industrial Design (Honours)
+3400 Arts
+3401 Arts (Honours)
+3402 Media and Communications
+3403 Arts
+3405 Arts (Asian Studies)
+3406 Arts (European Studies)
+3408 Arts (Dance) Education
+3409 Arts
+3410 Arts Education
+3411 Asian Studies
+3412 European Studies
+3413 International Studies (Asian)
+3414 International Studies (Euro)
+3415 International Studies (Global)
+3416 International Studies (Lang)
+3417 Languages
+3418 Music
+3420 Social Science
+3421 Social Science (Asian Studies)
+3422 Criminology & Criminal Justice
+3423 Social Science (Honours)
+3424 International Studies
+3425 Music
+3426 Music/Education
+3427 Music/Arts
+3428 Media (Media Production)
+3429 Media (Comms & Journalism)
+3430 Psychology
+3431 Psychology
+3432 Psychology
+3433 Media (Screen & Sound)
+3434 Media (PR and Advertising)
+3435 Psychological Science
+3436 Music
+3437 Arts and Business
+3438 Media (Screen & Sound Prod)
+3439 Applied Psychology
+3441 Int Studies/Media (Com & Jour)
+3442 Int Studies/Media (PR & Adv)
+3446 Music / Education (Secondary)
+3448 Music/Science
+3449 Music/Science(Advanced)
+3451 Innovation Management
+3456 Music / Arts
+3457 Music / Science
+3458 Music / Advanced Science
+3459 Music / Engineering
+3460 Music / Commerce
+3461 Innovation Management
+3462 Commerce/Education (Secondary)
+3480 Marketing
+3481 Accounting
+3482 Finance
+3483 Accounting & Info. Systems
+3484 Information Systems
+3485 Accounting and Finance
+3486 Industrial Relations
+3488 Marketing and German Studies
+3490 Marketing
+3491 Marketing and Hospitality Mngt
+3492 Finance & Marketing
+3493 Marketing & Accounting
+3494 Marketing & Japanese Studies
+3499 Mark & Human Resource Mgmt
+3500 Commerce
+3501 Commerce
+3502 Commerce
+3503 Accounting and Economics
+3504 Accounting & Japanese Studies
+3505 Accounting
+3506 Acc & Business Info Tech.
+3508 Acc & Fin (Co-Op Program)
+3510 Accounting, Finance & Systems
+3511 Finance
+3512 Accounting & Information Syst
+3513 Information Systems
+3514 Accounting and Finance
+3518 Accountancy
+3519 Accounting & Financial Mgmt
+3521 Commerce/Economics
+3522 Commerce/Arts
+3523 Advanced Maths (Hons)/Commerce
+3525 Commerce/Arts
+3526 Economics/Arts
+3527 Commerce/Social Science
+3528 Economics/Social Science
+3529 Commerce/Science
+3530 Economics
+3531 Economics
+3532 Economics & Asian Studies
+3533 Finance & Japanese Studies
+3534 Finance & Information Systems
+3538 Commerce (International)
+3539 Commerce (Liberal Studies)
+3540 Applied Psychology
+3541 Economics and Finance
+3542 Economics & German Studies
+3543 Economics
+3544 Economics & Accounting
+3545 Economics and Finance
+3546 Economics & Finance (Hon)
+3547 Economics and Finance
+3548 Economics and Finance
+3550 Industrial Relations
+3551 Industrial Relations
+3552 Economics/Arts
+3553 Economics (Liberal Studies)
+3554 Commerce (Co-op)
+3555 Econ & Industrial Relations
+3556 Econ & Industrial Rel (Hon)
+3557 Econ & Industrial Relations
+3558 Commerce (International)
+3559 Commerce/Media (PR & Advert)
+3560 Econometrics
+3561 Econometrics
+3562 Econometrics and Finance
+3563 Economics / Science
+3564 Economics / Science (Adv Math)
+3566 Economics / Science (Adv Sc)
+3567 Commerce / Fine Arts
+3571 Services Marketing - Trsm&Hosp
+3580 Economics & Econometrics (Hon)
+3584 Commerce / Information Systems
+3586 Actuarial Studies
+3587 Actuarial Studies (Co-op)
+3588 Actuarial Studies / Economics
+3589 Actuarial Stu/Adv Maths (Hons)
+3590 Economic History
+3591 Economic History
+3593 Commerce/Adv Science (Hons)
+3601 Holding Program BE BSc
+3602 Holding Program BE MBiomedE
+3603 Holding Program BE/BA
+3605 Eng (Civil/Mining/Environ)
+3609 Aeronautical Engineering
+3610 Aerospace Engineering
+3611 Science / Aerospace Eng
+3612 Aerospace Engineering/Arts
+3615 Materials Engineering
+3617 Nanotechnology
+3618 Nanotechnology
+3620 Civil Engineering
+3621 Civil Engineering/Arts
+3622 Civil Engineering/MEngSc
+3624 Engineering (Civil Eng w Arch)
+3625 Environmental Engineering
+3626 Environmental Engineering/Arts
+3627 Environmental Eng/MEngSc
+3630 Civil Engineering
+3631 Civil Eng/Environmental Eng
+3632 Psychology (Honours)
+3634 Photonic Engineering/Science
+3635 Eng (Civil w Arch) (Honours)
+3639 Civil Engineering
+3640 Electrical Engineering
+3641 Telecommunications/Science
+3642 Photovoltaics & Solar Energy
+3643 Telecommunications
+3644 Photonic Engineering
+3645 Computer Engineering
+3646 Telecommunications/Arts
+3647 Bioinformatics
+3648 Software Engineering
+3650 Electrical Engineering
+3651 Software Engineering/Science
+3652 Software Engineering/Arts
+3653 Software Engineering/Commerce
+3655 PV and Solar Energy/Science
+3656 PV and Solar Energy/Arts
+3657 Renewable Energy Engineering
+3658 Renewable Energy/Science
+3659 Electrical Engineering
+3660 Industrial Engineering
+3663 Manufacturing Eng & Management
+3664 Manufacturing Mngt/Science
+3665 Manufacturing Management/Arts
+3670 Industrial Engineering
+3680 Mechanical Engineering
+3681 Mechanical Engineering/Science
+3682 Mechanical Engineering/Arts
+3683 Mechanical Eng/Biomed Eng
+3685 Mechatronic Engineering
+3686 Mechatronic Eng/Science
+3687 Mechatronic Engineering/Arts
+3688 Mechatronic Eng/Biomedical Eng
+3690 Mechanical Engineering
+3699 Mechanical Engineering
+3700 Naval Architecture
+3701 Naval Architecture/Science
+3702 Naval Architecture/Arts
+3703 Engineering / Arts
+3704 Engineering / Arts
+3705 Engineering
+3706 Engineering Science
+3707 Engineering (Honours)
+3710 Mechanical & Manufacturing Eng
+3711 Mechanical & Manf Eng/Science
+3712 Mechanical & Manf Eng/Arts
+3715 Engineering/Commerce
+3720 Electrical Engineering/Arts
+3722 Computer Engineering/Arts
+3723 Telecommunications/Biomed Eng
+3725 Electrical Engineering/Science
+3726 Computer Engineering/Science
+3727 Electrical Eng/Biomed Eng
+3728 Computer Eng/Biomed Eng
+3729 Electrical Eng/Commerce
+3730 Civil Engineering/Science
+3731 BE ME Electrical Engineering
+3735 Environmental Engineering/Scie
+3736 BE (Hons) ME Elec Eng
+3740 Surveying
+3741 Geomatic Engineering
+3742 Surveying & Geoinfo Systems
+3745 Surveying/Science
+3746 Surveying and SIS/Science
+3747 Geomatic Engineering/Arts
+3749 Software Eng/Biomed Eng
+3750 Surveying
+3755 Bioinformatics/Science
+3756 Bioinformatics/Arts
+3757 Bioinformatics/Biomed Eng
+3761 Adv Math (Hons) / Eng (Hons)
+3762 AdvSci(Hons)/Engineering(Hons)
+3763 Engineering (Honours) / Arts
+3764 Engineering (Hons)/Commerce
+3765 Engineering (Honours) / Law
+3766 Music / Engineering (Honours)
+3767 Engineering (Hons) / Science
+3768 Eng (Hons) / MBiomedE
+3770 Commerce/Law
+3772 Engineering(Hons)/Computer Sci
+3773 Eng (Hons) / Eng Science
+3776 Engineering (Hons) / Surveying
+3780 Jurisprudence/Law
+3790 Law
+3800 Medicine
+3801 Medicine
+3802 Medicine
+3805 Medicine
+3810 Science (Medicine)
+3811 Science (Medicine)
+3820 Science/Medicine
+3821 Science/Medicine
+3830 Medical Science
+3831 Science (Medicine) Honours
+3835 Commerce / Aviation (Mgmt)
+3840 Arts/Medicine
+3841 Arts/Medicine
+3845 Arts / Medicine
+3850 Health and Sports Science
+3855 Medicine / Arts
+3860 Prosthetics and Orthotics
+3870 Health and Exercise Science
+3871 Exercise Physiology
+3877 Safety Science
+3910 Pure & Applied Chemistry
+3919 Applied Chemistry
+3925 Science and Business
+3926 Science / Fine Arts
+3930 Science/Arts
+3931 Advanced Science/Arts
+3932 Environmental Science/Arts
+3933 Advanced Mathematics/Arts
+3935 Science/Social Science
+3936 Adv Science/Social Science
+3937 Science/Social Rsch & Policy
+3938 Adv Science/Soc Rsch & Policy
+3941 Advanced Science / Engineering
+3942 Advanced Maths / Engineering
+3943 Environmental Management/Arts
+3945 Adv Science(Hons)/Computer Sci
+3946 Adv Maths (Hons)/Computer Sci
+3947 Science / Arts
+3950 Optometry
+3951 Science/Optometry
+3952 Commerce / Law
+3956 Advanced Mathematics (Honours)
+3961 Engineering (Honours) / Arts
+3962 Advanced Science (Honours)
+3963 Computer Science / Arts
+3965 Environmental Management
+3966 Life Sciences
+3967 Commerce / Computer Science
+3968 Computer Science / Arts
+3969 Media Arts (Hons) / Comp Sci
+3970 Science
+3971 Information Systems (Co-op)
+3972 Advanced Science
+3973 Adv Science (Medical Physics)
+3976 Advanced Science (Environ Sc)
+3978 Computer Science
+3979 Information Systems
+3980 Aviation (Flying)
+3981 Aviation (Management)
+3982 Computer Science/Digital Media
+3983 Science/Computer Science
+3984 Computer Science / Law
+3985 Adv Sci (Chem, Math & Phys)
+3986 Senior Secondary Student Prog
+3987 Science (International)
+3988 Environmental Science
+3989 Safety Science
+3990 Adv Science (Life Sciences)
+3991 Medical Science
+3992 Medicinal Chemistry
+3993 Communications
+3994 Media & Communications
+3995 Finance & Maths
+3996 Finance/Mathematics
+3997 Science (Advanced) (Hons)/Law
+3998 Science (Adv Maths)(Hons)/Law
+3999 Science
+4030 Social Work
+4031 Social Work
+4033 Social Work (Honours)
+4034 Soc Work (Hons)/Crim & Crim J
+4035 Social Work/Arts
+4036 Social Work/Social Science
+4037 Social Work/Arts
+4038 Social Work/Social Science
+4039 Soc Work/Criminology & Crim J
+4040 Health Administration
+4042 Social Work/Soc Rsch & Policy
+4043 Social Work (Honours) / Arts
+4044 Social Work (Honours)/SR&P
+4053 Arts / Education (Secondary)
+4054 Arts / Education (Secondary)
+4055 Arts/Education
+4056 Education (Secondary)
+4058 Economics/Educ (Secondary)
+4059 Fine Arts / Education (Sec)
+4060 Science (Education)
+4061 Design (Hons)/Education (Sec)
+4062 Media Arts (Hons) / Ed (Sec)
+4065 Music/Ed
+4070 Mathematics Education
+4075 Science/Education
+4076 Science/Education (Secondary)
+4080 Science Education
+4100 Primary Education
+4101 Preservice Primary Teacher Ed
+4102 Primary Teacher Education
+4120 Sports Science
+4121 Sports Science
+4122 Sports Coaching
+4130 Music Education
+4140 Leisure Studies
+4150 Applied Arts
+4155 Applied Arts/Education
+4300 Applied Science
+4310 Arts
+4320 Civil Engineering
+4360 Arts (Hon)
+4400 Arts
+4405 Business
+4410 Science
+4420 Engineering
+4421 Civil Engineering
+4422 Electrical Engineering
+4423 Mechanical Engineering
+4424 Aeronautical Engineering
+4425 Aeronautical Eng (Conversion)
+4426 Information Technology
+4430 Technology (Aeronautical Eng)
+4432 Electrical Engineering/Science
+4433 Mechanical Engineering/Science
+4435 Aeronautical Eng/Science
+4437 Technology (Aviation)
+4444 Maritime Engineering
+4445 Aeronautical Engineering/Arts
+4450 Science/Arts
+4461 Arts (CDF)
+4462 Business (CDF)
+4463 Science (CDF)
+4464 Electrical Engineering (CDF)
+4465 Aeronautical Engineering (CDF)
+4466 Civil Engineering (CDF)
+4467 Mechanical Engineering (CDF)
+4468 Tech Aero Engineering (CDF)
+4469 Information Technology (CDF)
+4474 Mechanical Engineering (Hons)
+4500 Science (Honours)
+4501 Commerce (Honours)
+4504 Arts & Social Sciences (Hons)
+4505 Criminology (Honours)
+4507 Social Research & Policy(Hons)
+4508 Music (Honours)
+4509 Education (Secondary) (Hons)
+4515 Comp Sci & Eng (Honours)
+4516 Art Theory (Honours)
+4620 Taxation
+4700 Holding Program Combined Law
+4703 Art Theory / Law
+4704 Fine Arts / Law
+4705 Architecture / Law
+4707 Planning/Law
+4710 Marketing / Law
+4720 Jurisprudence
+4730 Acct, Finance & Systems / Law
+4731 Accounting / Law
+4732 Accounting / Law
+4733 Commerce / Law
+4735 Finance / Law
+4736 Information Systems / Law
+4737 Actuarial Studies / Law
+4738 International Business / Law
+4739 Acct & Financial Mgmt / Law
+4740 Economics / Law
+4744 Economics / Law
+4745 Economics / Law
+4747 Economic History / Law
+4750 Industrial Relations / Law
+4760 Arts / Law
+4761 Social Science / Law
+4762 Asian Studies / Law
+4763 Criminology & Crim Justi / Law
+4764 Arts (Media & Comms) / Law
+4765 International Studies / Law
+4766 International Studies / Law
+4767 International Studies / Law
+4768 International Studies / Law
+4769 International Studies / Law
+4770 Science / Law
+4771 Social Research & Policy / Law
+4772 Science and Business / Law
+4773 Arts & Business / Law
+4775 Civil Engineering / Law
+4776 Engineering / Law
+4777 Environmental Engineering /Law
+4778 Engineering / Law
+4780 Jurisprudence / Law
+4781 Media / Law
+4785 Social Work / Law
+4786 Social Work / Law
+4787 Social Work (Honours) / Law
+4790 Law
+4791 Law (Part-Time)
+4800 Fine Arts
+4801 Art Education
+4802 Design
+4803 Art Theory
+4804 Applied Arts (Craft Arts)
+4806 Art Theory/Arts
+4807 Art Theory/Social Science
+4808 Art Education/Design
+4809 Design (Honours)
+4810 Digital Media
+4811 Design (Hons) / Art Education
+4812 Fine Arts/Arts
+4814 Fine Arts (Honours)
+4815 Art Theory/Soc Rsch & Policy
+4816 Media Arts (Honours)
+4818 Design (Honours) /Media (PR&A)
+4900 International Studies
+4902 International St / Media
+4910 Commerce
+4912 Commerce / Science
+4914 Commerce / Media
+4916 Commerce / Int Studies
+4920 Science(Advanced)
+4924 Science/Int Studies
+4930 Engineering
+4950 Design
+5000 Applied Geophysics
+5015 Biotechnology
+5020 Food Technology
+5025 Rangeland Management
+5026 Remote Sensing
+5031 Petroleum Engineering
+5034 Aluminium Smelting Technology
+5035 Materials
+5040 Mining Engineering
+5045 Mine Ventilation
+5047 Remote Sensing
+5057 Mining Management
+5081 Wool and Pastoral Sciences
+5090 Textiles Technology
+5132 Sustainable Development
+5147 Planning
+5195 Real Estate
+5196 Valuation
+5200 Housing & Neighbourhood Plan
+5205 Town Planning
+5210 Landscape Design
+5211 Human Rights Law and Policy
+5214 Law, Media & Journalism
+5222 Journalism and Communication
+5223 Indigenous Studies
+5225 Arts
+5226 Music
+5231 Business Law
+5235 Dispute Resolution
+5260 Librarianship
+5265 Applied Intellectual Property
+5271 Science & Society
+5272 Taxation & Financial Planning
+5273 Financial Planning
+5275 Arts (Research)
+5280 Policy Studies
+5281 International Law and Security
+5285 Criminal Justice & Criminology
+5290 Diplomatic Studies
+5291 Public Relations & Advertising
+5295 Professional Ethics
+5302 Art Administration
+5304 Science Grad Dip (Research)
+5307 Art
+5308 Digital Media
+5309 CrossDisciplinary Art & Design
+5330 Psychology
+5338 Engineering Science
+5341 Engineering Science
+5345 Biochemistry
+5350 Biological Science
+5355 Microbiology and Immunology
+5377 Business
+5380 Commerce and Economics
+5381 Economics
+5384 Human Resource Studies
+5386 Marketing
+5390 Commerce and Economics
+5391 Commerce and Economics
+5392 Mngt Accounting (Alt Mode)
+5395 Information Technology
+5432 Computing and Information Tech
+5440 Human Communication
+5444 Engineering
+5445 Engineering (Biomedical Eng)
+5448 Telecommunications
+5449 Engineering (Biomedical Eng)
+5450 Industrial Engineering
+5451 Engineering (Computer Science)
+5452 Computer Science
+5453 Information Science
+5454 Civil Engineering
+5455 Engineering (Industrial Eng)
+5456 Engineering (Mechanical Eng)
+5457 Business and Technology
+5458 Engineering (Electrical Eng)
+5459 Civil Engineering
+5461 Engineering (Civil Eng)
+5462 Engineering (Biomedical Eng)
+5463 Eng (Elec Eng & Comp Sci)
+5464 Engineering (Computer Ed)
+5465 Eng (Industrial Engineering)
+5466 Engineering (Mechanical Eng)
+5471 Eng Developments (Civil Eng)
+5472 Eng Developments (Biomed Eng)
+5473 Eng Developments (Elec Eng)
+5476 Eng Developments (Mech Eng)
+5480 Safety Science
+5485 Ergonomics
+5488 Environmental Studies
+5490 Surveying
+5491 Engineering (Surveying)
+5492 Geomatic Engineering
+5493 Land Administration
+5495 Remote Sensing
+5496 Spatial Information
+5498 Waste Management
+5499 Environmental Management
+5500 Paediatrics
+5501 Clinical Education
+5502 Health Personnel Education
+5503 Sports Medicine
+5504 Drug Development
+5505 Community Paediatrics
+5506 Geriatric Medicine
+5507 Public Health
+5508 Reproductive Medicine
+5509 Health Management
+5510 Food and Drug Analysis
+5511 Pharmaceutical Medicine
+5512 Forensic Mental Health
+5515 Physics
+5516 Physics Research Techniques
+5522 Science and Technology
+5523 Optometry
+5528 Physical Oceanography
+5530 Physical Oceanography
+5533 Physics (Research)
+5536 Aviation (Flying)
+5538 Aviation (Flying)
+5540 Advanced Taxation
+5541 Taxation Studies
+5543 Information Technology
+5550 Couple and Family Therapy
+5551 Couple and Family Therapy
+5552 International Soc Development
+5553 Equity & Social Administration
+5555 Int Social Development
+5556 Int Social Development
+5557 Social Development
+5560 Secondary Teacher Education
+5561 Higher Education
+5567 International Public Health
+5580 Health Administration
+5590 Librarianship
+5591 Info Mgmt - Librarianship
+5595 Project Management
+5600 Archives Administration
+5601 Info Mgmt - Archives Admin
+5602 Info Mngt - Archives/Records
+5603 Info Mgmt - Librarianship
+5610 Computer Education
+5630 Expressive & Performing Arts
+5645 Computation
+5647 Chemistry
+5648 Chemical Analysis & Lab Mngt
+5653 Remote Sensing
+5659 Mathematics and Statistics
+5661 Medical Physics
+5662 Optoelectronics and Photonics
+5663 Physics Research Techniques
+5665 Optometry
+5667 Safety, Health and Environment
+5668 Risk Management
+5669 Ergonomics
+5672 Safety Science
+5674 Occupational Medicine
+5675 Environmental Science
+5676 Fire and Explosion Management
+5678 Aviation Management
+5693 Spatial Information
+5700 Visual Arts
+5710 Mechanical & Manufacturing Eng
+5720 Art Education
+5724 Design
+5740 Law
+5741 Aviation Management
+5750 Legal Studies
+5760 Int'l Law & Int'l Relations
+5801 Civil Engineering
+5810 Electrical Engineering
+5811 Electrical Engineering
+5820 Management Studies
+5821 Management Studies
+5822 Mgt Studies (Distance Ed)
+5823 Management Studies
+5830 Information Science
+5831 Information Science
+5841 Operations Rsch & Statistics
+5852 Arts (English)
+5855 Arts
+5865 Information Technology
+5867 Systems Engineering
+5882 Science
+5888 Engineering Science
+5889 Engineering Science
+5900 Technology Management
+5910 Defence Studies
+5911 Defence Studies (Distance Ed)
+5912 Defence Studies
+5913 Defence Studies (Distance Ed)
+5914 Defence Studies
+5926 Education (Secondary)
+5930 Counselling Social Work
+5945 Management - HK
+5950 Management
+6000 Non Award (Built Environment)
+6001 Study Abroad Program
+6002 X-Instit UGRD (Arts & Soc Sci)
+6003 X-Instit (ADFA)
+6004 X-Instit (Spanish)
+6005 University Preparation Program
+6006 Visiting Student Program
+6007 Practicum Student Program
+6008 X-Instit UGRD (Built Environ)
+6009 X-Instit UGRD (Sci & Math)
+6010 NAWD UGRD (Arts & Soc Sci)
+6011 Non Award (Arts ADFA)
+6012 X Institutional UG (Life Sci)
+6013 X-Instit UGRD (Comm & Econ)
+6014 X-Instit UGRD (Eng)
+6015 X-Instit UGRD (Science)
+6016 X-Instit UGRD (Law)
+6017 X-Instit UGRD (App Sc)
+6018 X-Instit PGRD (Med)
+6019 X-Instit UGRD (Prof Stud)
+6020 NAWD (Biological Sciences)
+6021 Exchange Program
+6022 NAWD UGRD Exchange Prog (ADFA)
+6023 NAWD PGRD Exchange Prog (ADFA)
+6024 X-Instit U/G (Span & Lat Am S)
+6026 X-Instit (AGSM)
+6027 X-Instit UGRD (COFA)
+6028 X-Instit UGRD (ATAX)
+6030 NAWD UGRD (Comm & Econ)
+6031 NAWD PGRD (Comm & Econ)
+6032 X-Instit PGRD (Comm & Econ)
+6036 X-Instit (ADFA)
+6037 Prof Practicum Program (ADFA)
+6038 X-Instit (Pathology - Chiro)
+6039 Bridging Program
+6040 NAWD UGRD (Eng)
+6041 NAWD (Eng ADFA)
+6042 Indigenous Pre Entry Program
+6043 NAWD PGRD (Eng)
+6044 X-Instit PGRD (Eng)
+6045 Short Course (Civil Eng)
+6046 NAWD (Eng - Research)
+6047 NAWD - Exchange Program (COFA)
+6048 X-Instit UGRD (Med)
+6049 Non Award P/G Civil Eng (EEA)
+6050 NAWD UGRD (Sci)
+6051 NAWD (Sci ADFA)
+6052 NAWD PGRD (Optometry)
+6053 NAWD PGRD (Sci)
+6054 X-Instit PGRD (Sci)
+6055 NAWD UGRD (Sci & Math)
+6056 NAWD PGRD (Built Environ)
+6057 X-Instit PGRD (Built Environ)
+6058 Nawd Pgrd (Obt)
+6060 NAWD UGRD (Law)
+6061 NAWD (Law - Research)
+6062 NAWD (Learning Alliance)
+6063 NAWD PGRD (Law)
+6064 X-Instit PGRD (Law)
+6065 Non Award Taxation UG
+6066 Non Award Taxation PG
+6067 X-Instit PGRD (ATAX)
+6068 Nawd Pgrd (Adfa)
+6069 Nawd Pgrd (Adfa)
+6070 NAWD UGRD (App Sc)
+6071 NAWD PGRD (App Sc)
+6073 NAWD PGRD (Life Sci)
+6075 NAWD PGRD (Arts & Soc Sc)
+6076 X-Instit PGRD (Arts & Soc Sc)
+6077 NAWD PGRD (Med)
+6078 NAWD PGRD (COFA)
+6079 X-Instit PGRD (COFA)
+6080 NAWD UGRD (Med)
+6081 NAWD UGRD (Anatomy)
+6082 NAWD UGRD (Pathology)
+6083 NAWD UGRD (Physiology & Pharm)
+6084 NAWD UGRD (Med Full Fee)
+6085 NAWD UGRD (Community Med)
+6086 NAWD (OTD Bridging Program)
+6087 Exchange (AGSM)
+6088 Medical Clerkship Program
+6089 Nawd Pgrd (Adfa)
+6090 NAWD (Prof Stud)
+6092 X-Instit PGRD (Prof Stud)
+6094 Nawd (Pgrd Adfa)
+6095 NAWD (General Stud)
+6096 Non-Award (AGSM)
+6097 Nawd Ugrd (Cofa)
+6098 NAWD (Social Work)
+6100 PGRD Qual (Faculty of App Sc)
+6107 PGRD Qual (Mining Eng)
+6111 University Preparation Program
+6112 University Preparation Program
+6114 University Preparation Program
+6115 UNSW Preparation Program 17-19
+6125 PGRD Qual (App Geology)
+6127 PGRD Qual (Geography)
+6140 Mathematics Skills Program
+6142 PGRD Qual (BioTech)
+6148 PGRD Qual (Chem Eng & Indus Ch
+6150 PGRD Qual (Faculty of Arts)
+6200 PGRD Qual (Faculty of Life Sc)
+6241 PGRD Qual (BioChem)
+6242 PGRD Qual (BioTech)
+6244 PGRD Qual (Microbiology)
+6246 PGRD Qual (Biological Sc)
+6250 PGRD Qual (Faculty of Comm)
+6255 Non-award U/G Taxation (ATO)
+6256 Non-award P/G Taxation (ATO)
+6257 X-institut. U/G Taxation (ATO)
+6260 NAWD (ANZSOG)
+6262 X-Instit PGRD AGSM
+6267 Senior Secondary Student Prog
+6268 HSC Pathways
+6291 Non-award P/G (ADFA RAAFRS)
+6300 PGRD Qual (Faculty of Eng)
+6306 PGRD Qual (Elec Eng)
+6308 PGRD Qual (Civil Eng)
+6310 PGRD Qual (Comp Sc)
+6329 PGRD Qual (Surveying)
+6332 PGRD Qual (Biomedical Eng)
+6347 PGRD Qual (Safety Sc)
+6390 P/G Qual Coursework (Eng)
+6394 P/G Qualifying GradDip (Eng)
+6400 PGRD Qual (Faculty of Arch)
+6411 PGRD Qual (Architecture)
+6436 PGRD Qual (Town Planning)
+6437 PGRD Qual (Landscape Arch)
+6439 PGRD Qual (Built Environ)
+6499 P/G Qual Research (Built Env)
+6500 PGRD Qual (Faculty of Sc)
+6501 PGRD Qual (Physics)
+6502 PGRD Qual (Chemistry)
+6504 PGRD Qual (Chem Research Tech)
+6510 PGRD Qual (Mathematics)
+6531 PGRD Qual (Optometry)
+6555 Foundation Studies
+6562 PGRD Qual (Hist & Philosophy)
+6590 P/G Qual Coursework (Science)
+6616 PGRD Qual (Health Admin)
+6620 PGRD Qual (Master of Ed)
+6640 PGRD Qual (Sports Sc)
+6655 PGRD Qual (Librarianship)
+6658 PGRD Qual (Ed Stud)
+6663 PGRD Qual (Social Work)
+6690 P/G Qual Coursework (Med)
+6699 P/G Qual Research (Medicine)
+6700 PGRD Qual (Faculty of Med)
+6714 PGRD Qual (Accountancy)
+6715 PGRD Qual (Economics)
+6716 PGRD Qual (Banking & Finance)
+6718 PGRD Qual (Info Sys)
+6728 PGRD Qual (Marketing)
+6730 PGRD Qual (Organisational Beh)
+6731 PGRD Qual (Industrial Rel)
+6740 PGRD Qual (Medical Ed)
+6770 PGRD Qual (Anatomy)
+6771 PGRD Qual (Med - PH/POW)
+6772 PGRD Qual (Pathology)
+6773 PGRD Qual (Physiology & Pharm)
+6776 PGRD Qual (Paediatrics)
+6799 P/G Qual Research (Commerce)
+6830 Graduate Management Qual
+6831 Change Management Qual
+6850 PGRD Qual (English)
+6851 PGRD Qual (History)
+6852 PGRD Qual (Philosophy)
+6853 PGRD Qual (Sociology)
+6854 PGRD Qual (Political Science)
+6856 PGRD Qual (French)
+6861 PGRD Qual (Music)
+6867 PGRD Qual (Hist & Art Theory)
+6890 PGRD Qual (Law)
+6894 P/G Qual Coursework (ATAX)
+6901 UNSW Asia - NAWD
+6902 Study Abroad (AGSM)
+6930 Summer School
+6940 PGRD Qual (Taxation)
+6958 Aus Command & Staff Col (NAWD)
+6959 Aus Command & Staff Col(Audit)
+6960 PGRD Qual (Fine Arts)
+6989 PGRD Qual (M.Mgt.Stud)
+6992 PGRD Qual (Research)
+6993 PGRD Qual (Master of Eng)
+6994 PGRD Qual (M.Inf.Sc.)
+6995 PGRD Qual (M.Eng.Sc. - Elec)
+6996 PGRD Qual (M.Eng.Sc. - Civil)
+6998 PGRD Qual (M.Def.Stud)
+6999 PGRD Qual (A.D.F.A.)
+7015 Sci, Eng & Tech
+7016 Humanities
+7017 Business Pathways
+7018 Computer Science
+7019 Indigenous Preparatory Program
+7101 Primary Education
+7123 Construction Project Mgmt
+7147 Planning
+7210 Business Computing
+7222 Journalism and Communication
+7223 Indigenous Studies
+7230 Recreation Servicing
+7250 Expressive and Performing Arts
+7260 Expressive and Performing Arts
+7270 Taxation & Financial Planning
+7273 Financial Planning
+7280 Taxation
+7291 Public Relations & Advertising
+7300 Higher Education
+7302 Art Administration
+7303 Design
+7304 Art and Design Education
+7307 Art
+7308 Digital Media
+7309 CrossDisciplinary Art & Design
+7310 Food Science and Technology
+7311 Design
+7312 Forensic Mental Health
+7313 Urban Policy and Strategy
+7315 Change Management
+7316 Management
+7325 Arts
+7326 Music
+7327 Education
+7330 Rsch Mngt & Commercial
+7332 Sustainable Development
+7333 Business and Technology
+7334 Aluminium Smelting Technology
+7335 Mining Engineering
+7336 Civil Engineering
+7337 Environmental Engineering
+7338 Engineering Science
+7339 Environmental Management
+7340 Safety Science
+7341 Petroleum Engineering
+7342 Computing
+7344 Advanced Computing
+7345 Science and Technology
+7347 Program Evaluation
+7348 Policy Studies
+7349 Social Development
+7350 Philosophy for Teachers
+7355 Commerce
+7356 Mngt Accounting (Alt Mode)
+7357 Social Impact
+7360 Health Services Management
+7364 Geriatric Medicine
+7366 Business
+7367 International Public Health
+7368 Public Health
+7370 Drug Development
+7375 University Learning & Teaching
+7376 Clinical Education
+7377 Health Professions Education
+7378 Sports Medicine
+7379 Reproductive Medicine
+7380 Information Technology
+7382 Science
+7383 Management Studies
+7384 Defence Studies
+7385 Arts
+7386 Arts (English)
+7387 Engineering Science
+7388 Engineering Science
+7389 Defence Studies
+7390 Information Science
+7391 Management Studies
+7393 Electrical Engineering
+7394 Information Science
+7395 Operations Rsch & Statistics
+7397 Information Technology
+7398 Mngt Studies (Distance Ed)
+7401 Education
+7414 Marketing
+7425 Biotechnology
+7428 Chem Analysis & Lab Management
+7429 Chem Analysis & Lab Management
+7432 Optoelectronics and Photonics
+7435 Optometry
+7436 Ocular Therapeutics
+7437 Industrial Safety
+7438 Risk Management
+7439 Ergonomics
+7442 Safety Science
+7443 Occupational Hlth & Safety Mgt
+7444 Occupational Rehabilitation
+7445 Environmental Science
+7447 Safety, Health and Environment
+7448 Aviation Management
+7449 Aviation Management
+7467 Systems Engineering
+7534 Science
+7541 Taxation Studies
+7543 Computing
+7659 Mathematics and Statistics
+7710 Good Manufacturing Practice
+7714 Spatial Information
+7745 Conservation Biology
+7960 Educational Leadership
+8000 Bioprocess Engineering
+8005 Chemical Technology
+8007 Technology & Innovation Mgmt
+8009 Technology and Innovation Mgmt
+8014 Chemical Engineering
+8015 Chemical Eng & Industrial Chem
+8016 Process Engineering
+8020 Engineering Geology Hydro&Env
+8021 Hydrogeology & Groundwater Mng
+8022 Applied Geology
+8024 Geographic Information Systems
+8025 Arid Lands Management
+8026 Remote Sensing
+8030 Food Science and Technology
+8031 Food Microbiology
+8032 Food Science and Technology
+8033 Food Science and Technology
+8034 Food Science & Tech (Extn)
+8035 Food Engineering
+8039 Biopharmaceuticals
+8040 Environmentl Pollution Control
+8042 Biotechnology
+8043 Biopharmaceuticals
+8044 Occupational Health and Safety
+8045 Environmental Studies
+8046 Environmental Management
+8047 Applied Science
+8048 Biotechnology
+8049 Biopharmaceuticals
+8050 Metallurgy
+8055 Mining Engineering
+8056 Mining Geomechanics
+8057 Mining Management
+8058 Mining Engineering
+8065 Engineering Materials
+8073 Optometry and Vision Science
+8075 Ergonomics
+8077 Industrial Safety
+8085 Waste Management
+8094 Geological Data Processing
+8100 Science (Acoustics)
+8110 Science (Building)
+8116 Project Management
+8123 Construction Project Mgmt
+8124 Const Project Mgt in Prof Prac
+8125 Construction Management
+8126 Construction Management
+8127 Property and Development
+8128 Real Estate
+8129 Real Estate
+8130 Built Env (Bldg Conservation)
+8131 Urban Development and Design
+8132 Sustainable Development
+8133 Architecture/Built Environment
+8140 Architectural Design
+8142 Architecture
+8143 Architecture
+8145 Industrial Design
+8146 Industrial Design
+8147 Planning
+8155 Cognitive Science
+8160 Mathematics
+8161 Financial Mathematics
+8170 English
+8171 English
+8172 English
+8175 Arts
+8180 History
+8185 Science and Society
+8186 Science and Society
+8195 Political Science
+8200 Arts
+8201 German Studies
+8210 French
+8220 Sociology
+8221 Intl Relations/Public Policy
+8222 Journalism and Communication
+8223 Indigenous Studies
+8224 Combined Arts/Social Sciences
+8225 Arts
+8226 Music
+8227 Professional Ethics
+8228 Couple and Family Therapy
+8229 Arts (Extension)
+8230 Drama
+8231 Theatre Studies
+8235 Latin American Studies
+8238 Housing Studies
+8240 Interdisciplinary Studies
+8241 Australian Studies
+8242 Interdisciplinary Studies-Aus
+8244 Interdisciplinary Studies
+8245 Music
+8247 Interdis Studies (Asian Stud)
+8248 Policy Studies
+8249 Applied Linguistics
+8250 Psychology
+8251 Psychology (Clinical)
+8252 Psychology (Applied)
+8253 Psychology (Forensic)
+8254 Psychology (Organisational)
+8256 Psychology (Clinical)
+8257 Psychology (Forensic)
+8258 Psychology (Organisational)
+8265 Marine Science
+8270 Marine Science & Management
+8281 PR and Advertising
+8291 Public Relations & Advertising
+8313 Urban Policy and Strategy
+8338 Engineering Science
+8345 Business Administration - HK
+8350 Business Administration
+8355 Business Administration (Exec)
+8358 Management
+8370 International Business/Global
+8371 International Business
+8388 Business
+8390 Management Economics
+8395 Management Studies
+8396 Management Studies
+8397 Mngt Studies (Distance Ed)
+8398 Management Studies
+8399 Capability Management
+8400 Accountancy
+8401 Commerce and Economics
+8402 Mngt Accounting (Alt Mode)
+8403 International Prof Accounting
+8404 Commerce and Economics
+8405 International Prof Accounting
+8406 Finance
+8407 Information Systems
+8408 Commerce
+8409 Professional Accounting
+8410 Business Administration
+8411 Actuarial Studies
+8412 Economics
+8413 Financial Analysis
+8414 Marketing
+8415 Professional Accounting (Ext)
+8416 Actuarial Studies (Extension)
+8417 Commerce (Extension)
+8418 Risk Management
+8420 Econometrics
+8425 Accounting & Busn Info Tech
+8427 Financial Economics
+8428 Risk Management
+8430 Economics
+8435 Information Systems Management
+8440 Marketing
+8461 Professional Accounting
+8464 Adv Prof Spec Mngt Acct
+8465 Ad Professional Specialisation
+8466 Advanced Disciplinary Spec
+8467 Adv Disciplinary Spec Finance
+8468 Adv Spec in Info Systems
+8469 Adv Prof Spec Taxation
+8470 Commerce
+8471 Advanced Professional Account
+8475 Personalised Program
+8480 Economic History
+8481 Economics/Econometrics
+8482 Economics / Finance
+8483 Economics/Industrial Relations
+8484 Economics
+8486 Natural Resource Economics
+8487 Macroeconomics & Public Policy
+8488 Econometrics
+8490 Marketing
+8491 Marketing & Organisational Beh
+8495 Organisational Behaviour
+8496 Industrial Relations & Organ B
+8497 Human Resource Studies
+8500 Electrical Engineering
+8501 Electrical Engineering
+8503 Telecommunications
+8504 Computer Science
+8505 Electrical Engineering
+8508 Information Science
+8510 Engineering Construction
+8512 Photovoltaics and Solar Energy
+8530 Industrial Engineering
+8531 Manufacturing Engineering
+8538 Engineering Science
+8539 Engineering Science (Ext)
+8540 Mechanical Engineering
+8541 Mechanical Engineering
+8543 Information Technology
+8545 Industrial Safety
+8555 Information Science
+8556 Information Science
+8557 Civil Engineering
+8558 Electrical Engineering
+8559 Operations Rsch & Statistics
+8562 Science
+8565 Information Technology
+8566 Sustainment Management
+8567 Systems Engineering
+8568 Engineering Science
+8569 Engineering Science
+8580 Structural Engineering
+8590 Transportation and Traffic
+8595 Project Management
+8600 Water Engineering
+8607 Engineering
+8610 Civil Engineering
+8611 Civil Engineering
+8612 Civil Engineering
+8614 Waste Management
+8615 Environmental Eng Science
+8616 Business and Technology
+8617 Civil Engineering
+8618 Environmental Eng Science
+8619 Environmental Management
+8620 Transport and Highways
+8621 Engineering
+8622 Space Engineering
+8623 Environmental Management
+8640 Remote Sensing
+8641 Remote Sensing
+8650 Surveying
+8651 Surveying & Spatial Info Sys
+8652 Geomatic Engineering
+8653 Land Administration
+8655 Petroleum Engineering
+8660 Biomedical Engineering
+8665 Biomedical Engineering
+8670 Safety Science
+8671 Safety Science
+8680 Computer Science
+8682 Computing and Information Tech
+8684 Information Technology
+8685 Computer Science & Engineering
+8690 Technology Management
+8691 Arts/Philosophy
+8692 Defence Studies/Philosophy
+8693 Engineering Science/Philosophy
+8702 Groundwater Studies
+8703 Geological Data Processing
+8705 Computation
+8708 Chemical Analysis & Lab Mngt
+8710 Mechanical & Manufacturing Eng
+8711 Geographic Information Systems
+8712 Environmental Management
+8713 Remote Sensing
+8714 Spatial Information
+8715 Engineering Materials
+8718 Mathematics
+8719 Mathematics
+8720 Science and Technology
+8722 Optoelectronics and Photonics
+8727 Industrial Safety
+8728 Risk Management
+8729 Ergonomics
+8730 Physics
+8732 Occupational Health and Safety
+8733 Occupational Health and Safety
+8734 Occupational Medicine
+8735 Environmental Science
+8736 Fire and Explosion Management
+8737 Safety, Health and Environment
+8738 Aviation
+8740 Mathematics
+8741 Aviation Management
+8745 Conservation Biology
+8750 Statistics
+8751 Biostatistics
+8760 Graduate Optometry
+8761 Community Eye Health
+8770 Chemistry
+8780 Science and Society
+8790 Computational Science
+8800 Chemical Technology
+8900 Health Administration
+8901 Health Management
+8902 Health Management (Ext)
+8910 Education
+8911 Higher Education
+8915 Education (Stage 1)
+8920 Librarianship (General)
+8922 Information Science
+8923 Information Management Archive
+8924 Information Mgmt - Library
+8926 Teaching (Secondary)
+8930 Social Work
+8931 Couple and Family Therapy
+8932 Int Social Development
+8933 Equity & Social Administration
+8934 Couple and Family Therapy
+8936 Int Social Development
+8938 Int Social Development
+8939 Social Development
+8940 Health Planning
+8941 Health Services Management
+8950 Nursing Administration
+8960 Educational Leadership
+8965 Teacher Education
+9000 Health Professions Education
+9010 Paediatrics
+9012 Forensic Mental Health
+9014 Women's Health Medicine
+9015 Community Paediatrics
+9020 Community Health
+9025 Geriatrics
+9030 Psychotherapy
+9031 Psychological Medicine
+9036 Health Informatics
+9037 Health Informatics (Extension)
+9043 Int Pub Health/Pub Health
+9044 Int Pub Hlth/Hlth Mgmt
+9045 Public Health
+9046 Public Health (Extn)
+9047 Public Health/HealthManagement
+9048 International Public Health
+9050 Clinical Education
+9055 Sports Medicine
+9060 Drug Development
+9065 Reproductive Medicine
+9100 General Studies
+9150 Juris Doctor
+9200 Law
+9210 Law and Management
+9211 Human Rights Law and Policy
+9214 Law, Media & Journalism
+9220 Legal Studies
+9231 Business Law
+9235 Dispute Resolution
+9240 Int'l Law & Int'l Relations
+9245 Revenue Administration
+9250 Taxation
+9255 International Taxation
+9257 Taxation Studies
+9260 Applied Taxation
+9270 Taxation & Financial Planning
+9273 Financial Planning
+9281 International Law and Security
+9285 Criminal Justice & Criminology
+9300 Fine Arts
+9301 Art
+9302 Art Administration
+9303 Art Education
+9304 Design
+9305 Design
+9307 Art
+9308 Digital Media
+9309 CrossDisciplinary Art & Design
+9310 Art Education
+9311 Design
+9318 Curating & Cultural Leadership
+9320 Art Theory
+9330 Creative Arts Education
+9340 Sports Science
+9341 Sports Science
+9380 Information Technology
+9900 Defence Studies
+9901 Defence Studies (Distance Ed)
+9902 Defence Studies
+9903 Defence Studies (Distance Ed)
+9904 Defence Studies
+9920 Information Technology

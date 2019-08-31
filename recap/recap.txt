@@ -1,0 +1,22 @@
+shell
+
+$0 name of the program
+$1 first parameter
+$2 second parameter
+$# number of parameters
+$? the status of last command
+$(( cnt + 1 ))
+
+Perl
+
+@arr
+sort{$a <=> $b} @arr;
+reverse @arr;
+sort{$b cmp $a} @arr;
+%hash
+keys %hash
+values %hash
+
+for (@arr)
+for (keys %hash)
+while ($line=<>)

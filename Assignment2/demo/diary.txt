@@ -1,0 +1,20 @@
+Date	 | Start | Stop  | Activity | Comments
+26/07/19 | 22:00 | 23:30 | Coding   | Implement Login and Registration in Level 0
+27/07/19 | 11:00 | 14:00 | Coding   | Implement Feed Interface in Level 0
+28/07/19 | 14:00 | 16:30 | Coding   | Separate codes from main.js to other files
+28/07/19 | 17:00 | 20:00 | Coding   | Implement Level 1
+29/07/19 | 10:00 | 13:45 | Coding   | Implement profile, show upvotes of Level 2
+30/07/19 | 13:00 | 21:00 | Coding   | Implement post content and vote of Level 2
+31/07/19 | 10:00 | 12:00 | Coding   | Add some CSS styles
+31/07/19 | 12:00 | 15:00 | Coding   | Implement profile update of Level 3
+31/07/19 | 09:00 | 12:50 | Coding   | Fix bugs, implement user page, follow and unfollow of Level 3
+04/08/19 | 11:00 | 14:00 | Coding   | Implement post deletion and modification of Level 3
+05/08/19 | 13:00 | 15:00 | Coding   | Optimise some functionalities
+06/08/19 | 09:00 | 12:00 | Coding   | Implement search functionality of Level 3
+06/08/19 | 12:00 | 14:10 | Coding   | Implement notification of Level 4
+06/08/19 | 16:00 | 17:00 | Coding   | Do some UI design
+07/08/19 | 10:00 | 19:00 | Coding   | Implement multi-subseddit
+08/08/19 | 13:30 | 14:00 | Coding   | Refactor
+08/08/19 | 19:00 | 20:30 | Coding   | Refactor
+09/08/19 | 10:00 | 12:00 | Coding   | Fix bugs of wrong format of vote, show-comment, and add comment of subseddit
+09/08/19 | 13:00 | 20;20 | Coding   | Fix many bugs, add the search-user functionality, add the page refreshment functionality, and add back-scroll functionality

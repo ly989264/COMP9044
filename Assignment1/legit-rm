@@ -1,0 +1,210 @@
+#!/bin/dash
+
+
+# check the existence of the .legit repository
+if (! test -d ".legit")
+then
+    echo "legit-rm: error: no .legit directory containing legit repository exists" >&2
+    exit 1
+fi
+
+
+# check the existence of commit
+next_ver_num=`head -n 1 ./.legit/next_ver`
+if (test "$next_ver_num" -eq 0)
+then
+    echo "legit-rm: error: your repository does not have any commits yet" >&2
+    exit 1
+fi
+
+
+force_flag=0
+cached_flag=0
+
+# check rm mode
+for eachpar in "$@"
+do
+    if (test "$eachpar" = '--force')
+    then
+        # force mode on
+        force_flag=1
+        continue
+    fi
+    if (test "$eachpar" = '--cached')
+    then
+        # cached mode on
+        cached_flag=1
+        continue
+    fi
+    tmp=`echo "$eachpar" | egrep '^-+'`
+    if (test "$tmp" != '')
+    then
+        echo "usage: legit-rm [--force] [--cached] <filenames>" >&2
+        exit 1
+    fi
+done
+
+
+current_branch=`head -n 1 ./.legit/head`
+
+
+# tmp files used
+remove_file_tmp="./.legit/.remove_file_tmp"
+rmrm_file_tmp="./.legit/.rmrm_tmp"
+cached_file_tmp="./.legit/.cached_tmp"
+
+
+# start rm procedure
+# because of the possibility of existence of "error" files, stored the info in the tmp files
+for each_file in "$@"
+do
+    # pass control parameters
+    if (test "$each_file" = '--force')
+    then
+        continue
+    fi
+    if (test "$each_file" = '--cached')
+    then
+        continue
+    fi
+
+    # avoid over-deletion procedure (these files already deleted)
+    if (test -f "./.legit/index/.rmrm")
+    then
+        if (test `egrep "^$each_file$" "./.legit/index/.rmrm"`)
+        then
+            echo "legit-rm: error: '$each_file' is not in the legit repository" >&2
+            exit 1
+        fi
+    fi
+    if (test -f "$rmrm_file_tmp")
+    then
+        if (test `egrep "^$each_file$" "$rmrm_file_tmp"`)
+        then
+            echo "legit-rm: error: '$each_file' is not in the legit repository" >&2
+            exit 1
+        fi
+    fi
+    if (test -f "./.legit/index/.cached" && test `egrep "^$each_file$" "./.legit/index/.cached"`)
+    then
+        echo "legit-rm: error: '$each_file' is not in the legit repository" >&2
+        exit 1
+    fi
+    if (test -f "$cached_file_tmp" && test `egrep "^$each_file$" "$cached_file_tmp"`)
+    then
+        echo "legit-rm: error: '$each_file' is not in the legit repository" >&2
+        exit 1
+    fi
+
+    source_path=`egrep "$each_file " "./.legit/lastest_files/$current_branch" | cut -d' ' -f2`
+
+    # test the existence of the file in the repository
+    if ( test "$source_path" != '' || test -f "./.legit/index/$each_file" || (test -f ./.legit/index/.rmrm && test `egrep "$each_file" "./.legit/index/.rmrm"`) || (test -f "$rmrm_file_tmp" && test `egrep "$each_file" "$rmrm_file_tmp"`))
+    then
+        # file exist~~~
+        echo "nothing" >/dev/null
+    else
+        echo "legit-rm: error: '$each_file' is not in the legit repository" >&2
+        exit 1
+    fi
+
+    # start the pesudo-rm procedure (save to tmp file in case of existence of "error" files later)
+    if (test "$force_flag" -eq 1)
+    then
+        # force mode on
+        if (test "$cached_flag" -eq 1)
+        then
+            # cached mode on
+            if (test -f "./.legit/index/$each_file")
+            then
+                echo "./.legit/index/$each_file" >>"$remove_file_tmp"
+            fi
+            echo "$each_file" >>"$cached_file_tmp"
+        else
+            # cached mode off
+            if (test -f "./.legit/index/$each_file")
+            then
+                echo "./.legit/index/$each_file" >>"$remove_file_tmp"
+            fi
+            echo "$each_file" >>"$rmrm_file_tmp"
+            echo "$each_file" >>"$remove_file_tmp"
+        fi
+    else
+        # force mode off
+        if (test "$cached_flag" -eq 1)
+        then
+            # cached mode on
+            if (test -f "./.legit/index/$each_file")
+            then
+                diff "./.legit/index/$each_file" "$each_file" >/dev/null
+                if (test "$?" -ne 0)
+                then
+                    echo "legit-rm: error: '$each_file' in index is different to both working file and repository" >&2
+                    exit 1
+                # else
+                #     echo "legit-rm: error: '$each_file' has changes staged in the index" >&2
+                #     exit 1
+                fi
+            fi
+            if (test -f "./.legit/index/$each_file")
+            then
+                echo "./.legit/index/$each_file" >>"$remove_file_tmp"
+            fi
+            echo "$each_file" >>"$cached_file_tmp"
+        else
+            # cached mode off
+            if (test -f "./.legit/index/$each_file")
+            then
+                diff "./.legit/index/$each_file" "$each_file" >/dev/null
+                if (test "$?" -ne 0)
+                then
+                    echo "legit-rm: error: '$each_file' in index is different to both working file and repository" >&2
+                    exit 1
+                else
+                    echo "legit-rm: error: '$each_file' has changes staged in the index" >&2
+                    exit 1
+                fi
+            fi
+            diff "./.legit/$source_path" "$each_file" >/dev/null
+            if (test "$?" -ne 0)
+            then
+                echo "legit-rm: error: '$each_file' in repository is different to working file" >&2
+                exit 1
+            fi
+            echo "$each_file" >>"$rmrm_file_tmp"
+            echo "$each_file" >>"$remove_file_tmp"
+        fi
+    fi
+done
+
+
+# deal with tmp files, and do the actual rm procedure
+if (test -f "$remove_file_tmp")
+then
+    cat "$remove_file_tmp" |
+    while read line
+    do
+        rm "$line"
+    done
+    rm "$remove_file_tmp"
+fi
+
+if (test -f "$rmrm_file_tmp") 
+then
+    cat "$rmrm_file_tmp" |
+    while read line
+    do
+        echo "$line" >>"./.legit/index/.rmrm"
+    done
+    rm "$rmrm_file_tmp"
+fi
+
+if (test -f "$cached_file_tmp") 
+then
+    cat "$cached_file_tmp" |
+    while read line
+    do
+        echo "$line" >>"./.legit/index/.cached"
+    done
+    rm "$cached_file_tmp"
+fi

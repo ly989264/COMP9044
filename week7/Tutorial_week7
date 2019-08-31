@@ -1,0 +1,35 @@
+# Tutorial Week7
+
+## Q3
+
+It will not raise the error, and will not work as well.
+
+IGNORE
+
+## Q5
+
+`
+h1 {
+    color: red;  (#FF0000)
+    font-style: bold;
+}
+`
+
+## !important flag of CSS
+
+## Difference between for...in and for...of
+
+in => index, keys
+of => value
+
+## Q20
+
+this 
+
+.call() is temporary
+while .bind() is perm
+
+## map reduce filter of array
+
+map    return an new array
+reduce(sum, 0)   return only one single value rather than an array

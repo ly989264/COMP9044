@@ -1,0 +1,108 @@
+#!/bin/dash
+
+
+# check the existence of the .legit repository
+if (! test -d ".legit")
+then
+	echo "legit-commit: error: no .legit directory containing legit repository exists"
+	exit 1
+fi
+
+
+# assume if .legit directory exists, then the index and data subdirectory also exist
+
+
+# show the usage message for error parameter format
+if (! test "$#" -eq 1)
+then
+	echo "usage: legit-show <commit>:<filename>"
+	exit 1
+fi
+
+
+# show the usage message for error parameter format
+if (test `echo "$1" | egrep '^-'`)
+then
+	echo "usage: legit-show <commit>:<filename>"
+	exit 1
+fi
+
+
+index_mode_flag=0
+
+
+# parse the parameter, and determine the mode
+if (test `echo "$1" | egrep '^:'`)
+then
+	# index mode
+	index_mode_flag=1
+	filename=`echo "$1" | cut -d: -f2`
+else
+	if (test `echo "$1" | egrep '^.+:.*?$'`)
+	then
+		# commit mode
+		index_mode_flag=0
+		commitid=`echo "$1" | cut -d: -f1`
+		filename=`echo "$1" | cut -d: -f2`
+	else
+		echo "legit-show: error: invalid object $1"
+		exit 1
+	fi
+fi
+
+
+current_branch=`head -n 1 ./.legit/head`
+
+
+# index mode
+if (test "$index_mode_flag" -eq 1)
+then
+	if (test -f "./.legit/index/$filename")
+	then
+		# the file already exists in index, show the file directly
+		cat "./.legit/index/$filename"
+		exit 0
+	else
+		# get the file from the repository
+		lastest_file="./.legit/lastest_files/$current_branch"
+		sourcepath=`egrep "$filename " "$lastest_file" | cut -d' ' -f2`
+		if (test "$sourcepath" != '')
+		then
+			cat "./.legit/$sourcepath"
+			exit 0
+		else
+			echo "legit-show: error: '$filename' not found in index"
+			exit 1
+		fi
+	fi
+fi
+
+
+# commit mode
+if (test -d "./.legit/data/$commitid")
+then
+	if (test -f "./.legit/data/$commitid/$filename")
+	then
+		# file exists, show the file
+		cat "./.legit/data/$commitid/$filename"
+	else
+		# check the .old file
+		if (test -f "./.legit/data/$commitid/.old")
+		then
+			real_path=`egrep "$filename " "./.legit/data/$commitid/.old" | cut -d' ' -f2`
+			if (test "$real_path" != '')
+			then
+				cat "./.legit/$real_path"
+			else
+				echo "legit-show: error: '$filename' not found in commit $commitid"
+				exit 1
+			fi
+		else
+			echo "legit-show: error: '$filename' not found in commit $commitid"
+			exit 1
+		fi
+	fi
+else
+	echo "legit-show: error: unknown commit '$commitid'"
+	exit 1
+fi

@@ -1,0 +1,231 @@
+#!/usr/bin/perl -w
+
+
+use File::Compare;
+
+
+# check the existence of the .legit repository
+if (! -d "./.legit") {
+	print "legit-branch: error: no .legit directory containing legit repository exists\n";
+	exit 1;
+}
+
+
+# check the existence of the commit
+open NEXTVER, '<', './.legit/next_ver' or die "cannot open ./.legit/next_ver\n";
+$next_ver_num = <NEXTVER>;
+chomp $next_ver_num;
+close NEXTVER;
+if ($next_ver_num == 0) {
+	print "legit-branch: error: your repository does not have any commits yet\n";
+	exit 1;
+}
+
+
+# check the format
+if (@ARGV != 1) {
+	print "usage: legit-checkout <branch>\n";
+	exit 1;
+}
+
+
+$target_branch=$ARGV[0];
+open IN, '<', "./.legit/head" or die "cannot open file ./.legit/head\n";
+$current_branch=<IN>;
+chomp $current_branch;
+close IN;
+
+
+# check the existence of the target branch
+open IN, '<', "./.legit/branch_list" or die "cannot open file ./.legit/branch_list\n";
+$exist_flag = 0;
+while (<IN>) {
+	chomp;
+	if ($_ eq $target_branch) {
+		$exist_flag = 1;
+		last;
+	}
+}
+close IN;
+if ($exist_flag == 0) {
+	print "legit-checkout: error: unknown branch '$target_branch'\n";
+	exit 1;
+}
+
+
+# chech the relation between current branch and target branch
+if ($target_branch eq $current_branch) {
+	print "Already on '$current_branch'\n";
+	exit 0;
+}
+
+
+# so at this time, the target branch should be a valid branch
+# start switching branches
+
+
+# get hashes of two lastest_files of two branches
+%current_hash=();
+%target_hash=();
+open IN, '<', "./.legit/lastest_files/$current_branch" or die "cannot open file ./.legit/lastest_files/$current_branch\n";
+while (<IN>) {
+	chomp;
+	my ($filename, $filepath) = split(/ /, $_);
+	$current_hash{$filename} = $filepath;
+}
+close IN;
+open IN, '<', "./.legit/lastest_files/$target_branch" or die "cannot open file ./.legit/lastest_files/$target_branch\n";
+while (<IN>) {
+	chomp;
+	my ($filename, $filepath) = split(/ /, $_);
+	$target_hash{$filename} = $filepath;
+}
+close IN;
+
+
+# get all files in the index directory and in the .rmrm file
+my @index_files_tmp = glob("./.legit/index/*");
+my @index_files = ();
+foreach (@index_files_tmp) {
+	$_ =~ s/^.*\/(.*?)$/$1/;  # reorder the format of these files
+	push @index_files, $_;
+}
+my @rmrm_files = ();
+if (-f "./.legit/index/.rmrm") {
+	open IN, '<', "./.legit/index/.rmrm" or die "cannot open file ./.legit/index/.rmrm\n";
+	while (<IN>) {
+		chomp;
+		push @rmrm_files, $_;
+	}
+	close IN;
+}
+
+
+# get all files in the current working directory that have been committed in the current branch
+my @work_files_tmp = glob("./*");
+my @work_files = ();
+foreach (@work_files_tmp) {
+	$_ =~ s/^.*\/(.*?)$/$1/;
+	# push @work_files, $_ if defined $current_hash{$_};
+	# wrong there, the corrected one should be the following
+	push @work_files, $_;
+}
+
+
+@incon_files = ();
+$incon_flag = 0;
+
+# compare two branches of the consistence of these files
+foreach $file (@index_files) {
+	my $hash_a = $current_hash{$file};
+	my $hash_b = $target_hash{$file};
+	if (defined $hash_a and defined $hash_b and $hash_a ne $hash_b) {
+		$incon_flag = 1;
+		push @incon_files, $file;
+	}
+	if (! defined $hash_a and defined $hash_b and ! -f $file) {
+		open IN, '<', "./.legit/lastest_files/$target_branch" or die "cannot open ./.legit/lastest_files/$target_branch\n";
+		while (<IN>) {
+			chomp;
+			if ($_ eq $file) {
+				$incon_flag = 1;
+				push @incon_files, $file;
+				last;
+			}
+		}
+		close IN;
+	}
+}
+
+
+foreach $file (@rmrm_files) {
+	my $hash_a = $current_hash{$file};
+	my $hash_b = $target_hash{$file};
+	if (defined $hash_a and defined $hash_b and $hash_a ne $hash_b) {
+		$incon_flag = 1;
+		push @incon_files, $file;
+	}
+	if (defined $hash_a and ! defined $hash_b and -f $file) {
+		$incon_flag = 1;
+		push @incon_files, $file;
+	}
+}
+
+
+# compare the consistence of the working-directory-files
+foreach $file (@work_files) {
+	if (defined $current_hash{$file} and defined $target_hash{$file} and $current_hash{$file} ne $target_hash{$file} and compare("$file", "./.legit/$current_hash{$file}") != 0) {
+		$incon_flag = 1;
+		push @incon_files, $file;
+	}
+	if (! defined $current_hash{$file} and defined $target_hash{$file}) {
+		open IN, '<', "./.legit/lastest_files/$target_branch" or die "cannot open ./.legit/lastest_files/$target_branch\n";
+		while (<IN>) {
+			chomp;
+			s/^(.*?) .*$/$1/;
+			# print "$file, $_\n";
+			if ($_ eq $file) {
+				$incon_flag = 1;
+				push @incon_files, $file;
+				last;
+			}
+		}
+		close IN;
+	}
+	if (defined $current_hash{$file} and ! defined $target_hash{$file}) {
+		if (-f "./.legit/index/$file" and compare("$file", "./.legit/index/$file") != 0) {
+			$incon_flag = 1;
+			push @incon_files, $file;
+		}
+	}
+}
+
+
+if (defined $incon_flag and $incon_flag == 1) {
+	@incon_files = sort @incon_files;
+	print "legit-checkout: error: Your changes to the following files would be overwritten by checkout:\n";
+	foreach (@incon_files) {
+		print "$_\n";  # sort???
+	}
+	exit 1;
+}
+
+
+# then, everything is good~
+# glad to switch branches~
+
+open OUT, '>', "./.legit/head" or die "cannot open file ./.legit/head";
+print OUT "$target_branch";
+close OUT;
+
+
+# delete all files that exist in the current repository
+foreach (keys %current_hash) {
+	if (-f and defined $current_hash{$_} and defined $target_hash{$_} and compare($_, "./.legit/$current_hash{$_}") == 0 and compare("./.legit/$current_hash{$_}", "./.legit/$target_hash{$_}") != 0) {
+		# print "$current_hash{$_}   $target_hash{$_}\n";
+		unlink;
+		# print "delete $_\n";
+	}
+	if (-f and defined $current_hash{$_} and compare($_, "./.legit/$current_hash{$_}") == 0 and ! defined $target_hash{$_}) {
+		unlink;
+	}
+}
+
+
+foreach (keys %target_hash) {
+	next if -f;
+	open IN, '<', "./.legit/$target_hash{$_}" or die "cannot open file ./.legit/$target_hash{$_}\n";
+	open OUT, '>', "./$_" or die "cannot open file ./$_\n";
+	my $tmp = $_;
+	while (<IN>) {
+		print OUT;
+	}
+	close IN;
+	close OUT;
+	# print "restore $tmp\n";
+}
+
+
+print "Switched to branch '$target_branch'\n";
+
+# it may seems that .rmrm file is cleared..., but quite sure...

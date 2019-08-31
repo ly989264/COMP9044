@@ -1,0 +1,282 @@
+#!/usr/bin/perl -w
+
+
+use File::Path;
+
+
+# define function to copy files
+sub copy {
+	my ($source_path, $target_path) = @_;
+	open SOURCE, '<', "$source_path" or die "cannot open source file in copy function\n";
+	open TARGET, '>', "$target_path" or die "cannot open target file in copy function\n";
+	while (<SOURCE>) {
+		print TARGET;
+	}
+	close SOURCE;
+	close TARGET;
+}
+
+
+# check the existence of the .legit repository
+if (! -d "./.legit") {
+	print STDERR "legit-branch: error: no .legit directory containing legit repository exists\n";
+	exit 1;
+}
+
+
+# check the existence of the commit
+open NEXTVER, '<', './.legit/next_ver' or die "cannot open ./.legit/next_ver";
+$next_ver_num = <NEXTVER>;
+chomp $next_ver_num;
+close NEXTVER;
+if ($next_ver_num == 0) {
+	print STDERR "legit-branch: error: your repository does not have any commits yet\n";
+	exit 1;
+}
+
+
+# check the existence of -d in parameter 
+# note: -d may also appear at the end of the parameter list
+$delete_flag = 0;
+foreach (@ARGV) {
+	if ($_ eq '-d') {
+		$delete_flag = 1;
+	} else {
+		if (/^-/) {
+			print STDERR "usage: legit-branch [-d] <branch>\n";
+			exit 1;
+		}
+		push @params, $_;
+	}
+}
+
+
+# print the error message for certain cases
+if ($delete_flag == 1) {
+	if ($#params == -1) {
+		print STDERR "legit-branch: error: branch name required\n";
+		exit 1;
+	} elsif ($#params != 0) {
+		print STDERR "usage: legit-branch [-d] <branch>\n";
+		exit 1;
+	}
+} else {
+	if ($#params > 0) {
+		print STDERR "usage: legit-branch [-d] <branch>\n";
+		exit 1;
+	}
+}
+
+
+# for the list mode
+if ($#params == -1) {
+	open BRANCHLIST, '<', './.legit/branch_list' or die "cannot open ./.legit/branch_list";
+	while (<BRANCHLIST>) {
+		chomp;
+		push @branch_lists, $_;
+	}
+	@branch_lists = sort @branch_lists;
+	foreach (@branch_lists) {
+		print $_, "\n";
+	}
+	exit 0;
+}
+
+
+open HEAD, '<', './.legit/head' or die "cannot open ./.legit/head\n";
+$current_branch = <HEAD>;
+chomp $current_branch;
+close HEAD;
+
+
+# for the create mode
+if ($delete_flag != 1) {
+	# check the existence of the new branch
+	open BRANCHLIST, '<', './.legit/branch_list' or die "cannot open ./.legit/branch_list\n";
+	while (<BRANCHLIST>) {
+		chomp;
+		if ($_ eq $params[0]) {
+			print STDERR "legit-branch: error: branch '$params[0]' already exists\n";
+			exit 1;
+		}
+	}
+	close BRANCHLIST;
+	open BRANCHLIST, '>>', './.legit/branch_list' or die "cannot open ./.legit/branch_list";
+	print BRANCHLIST "$params[0]\n";
+	&copy("./.legit/commit_log/$current_branch", "./.legit/commit_log/$params[0]");
+	&copy("./.legit/lastest_files/$current_branch", "./.legit/lastest_files/$params[0]");
+	close BRANCHLIST;
+
+	# create the common base commit log
+	mkdir "./.legit/base/$params[0]" if not -d "./.legit/base/$params[0]";
+	mkdir "./.legit/base/$current_branch/$params[0]" if not -d "./.legit/base/$current_branch/$params[0]";
+	mkdir "./.legit/base/$params[0]/$current_branch" if not -d "./.legit/base/$params[0]/$current_branch";
+	$lastest_commit_current = "";
+	open CURRENTCOMMITLOG, '<', "./.legit/commit_log/$current_branch" or die "cannot open file ./.legit/commit_log/$current_branch\n";
+	while (<CURRENTCOMMITLOG>) {
+		chomp;
+		s/^(\d+) .*$/$1/;
+		$lastest_commit_current = $_;
+	}
+	close CURRENTCOMMITLOG;
+	if ($lastest_commit_current eq "") {
+		die "no common lastest commit\n";
+	}
+	open TMPOUT, '>', "./.legit/base/$current_branch/$params[0]/commitid" or die "cannot open ./.legit/base/$current_branch/$params[0]/commitid\n";
+	print TMPOUT "$lastest_commit_current";
+	close TMPOUT;
+	open TMPOUT, '>', "./.legit/base/$params[0]/$current_branch/commitid" or die "cannot open ./.legit/base/$params[0]/$current_branch/commitid\n";
+	print TMPOUT "$lastest_commit_current";
+	close TMPOUT;
+	my @tmp_list = glob("./.legit/base/$current_branch/*");
+	foreach $branch_name (@tmp_list) {
+		$branch_name =~ s/^.*\/(.*?)$/$1/;
+		if ($branch_name ne $params[0]) {
+			mkdir "./.legit/base/$params[0]/$branch_name";
+			open IN, '<', "./.legit/base/$current_branch/$branch_name/commitid" or die;
+			open OUT, '>', "./.legit/base/$params[0]/$branch_name/commitid" or die;
+			$tmp_commitid = <IN>;
+			chomp $tmp_commitid;
+			print OUT $tmp_commitid;
+			close IN;
+			close OUT;
+			mkdir "./.legit/base/$branch_name/$params[0]";
+			open OUT, '>', "./.legit/base/$branch_name/$params[0]/commitid" or die;
+			print OUT $tmp_commitid;
+			close OUT;
+		}
+	}
+	# add the inheritation information and father information
+	open EMPTYOUT, '>', "./.legit/inherit_relation/$params[0]" or die;
+	print EMPTYOUT "";
+	close EMPTYOUT;
+	open OUT, '>', "./.legit/father_list/$params[0]" or die;
+	print OUT "$current_branch\n";
+	close OUT;
+	my $previous_father = "$current_branch";
+	while ($previous_father ne 'null') {
+		# add the information to the previous_father
+		open OUT, '>>', "./.legit/inherit_relation/$previous_father" or die;
+		print OUT "$params[0]\n";
+		close OUT;
+		open READFATHER, '<', "./.legit/father_list/$previous_father" or die;
+		$previous_father = <READFATHER>;
+		chomp $previous_father;
+		close READFATHER;
+	}
+	# testing
+}
+
+
+# for the delete mode
+if ($delete_flag == 1) {
+	$target_branch = $ARGV[1];
+
+	# check whether the target_branch is master
+	if ($target_branch eq 'master') {
+		print STDERR "legit-branch: error: can not delete branch '$target_branch'\n";
+		exit 1;
+	}
+
+	# check the existence of the target branch
+	$branch_existing_flag = 0;
+	open BRANCHLIST, '<', "./.legit/branch_list" or die "cannot open file ./.legit/branch_list\n";
+	while (<BRANCHLIST>) {
+		chomp;
+		if ($_ eq $target_branch) {
+			$branch_existing_flag = 1;
+			last;
+		}
+	}
+	if ($branch_existing_flag == 0) {
+		print STDERR "legit-branch: error: branch '$target_branch' does not exist\n";
+		exit 1;
+	}
+	$current_commitlog = "./.legit/commit_log/$current_branch";
+	$target_commitlog = "./.legit/commit_log/$target_branch";
+
+	# only need to check the lastest commit in target_commitlog
+	open TARGETLOG, '<', $target_commitlog or die "cannot open file $target_commitlog in delete mode\n";
+	while (<TARGETLOG>) {
+		chomp;
+		push @lines, $_;
+	}
+	close TARGETLOG;
+	$last_line = pop @lines;
+
+	# check whether this line exists in the current_commitlog
+	open CURRENTLOG, '<', $current_commitlog or die "cannot open file $current_commitlog in delete mode\n";
+	my $line_elog = 0;
+	while (<CURRENTLOG>) {
+		chomp;
+		if ($_ eq $last_line) {
+			$line_elog = 1;
+			last;
+		}
+	}
+	if ($line_elog == 0) {
+		print STDERR "legit-branch: error: branch '$target_branch' has unmerged changes\n";
+		exit 1;
+	}
+	close CURRENTLOG;
+
+	# can start deleting the branch
+	# remove the branch in the branch_list file
+	open IN, '<', "./.legit/branch_list" or die "cannot open file ./.legit/branch_list\n";
+	@branchs = <IN>;
+	close IN;
+	open OUT, '>', "./.legit/branch_list" or die "cannot open file ./.legit/branch_list for write\n";
+	foreach (@branchs) {
+		if (/^$/) {
+			next;
+		}
+		if (/^$target_branch$/) {
+			next;
+		}
+		print OUT;
+	}
+	close OUT;
+
+	# remove the directory under the commit_log and lastest_files
+	# use File::Path
+	rmtree("./.legit/commit_log/$target_branch");
+	rmtree("./.legit/lastest_files/$target_branch");
+
+	# remove the directory under the base
+	# rmtree("./.legit/base/$current_branch/$target_branch") if -d "./.legit/base/$current_branch/$target_branch";
+	rmtree("./.legit/base/$target_branch") if -d "./.legit/base/$target_branch";
+	foreach $branch_n (glob("./.legit/base/*")) {
+		rmtree("$branch_n/$target_branch") if -d "$branch_n/$target_branch";
+	}
+
+	# remove corresponding records in inherit_relation and father_list
+	unlink "./.legit/inherit_relation/$target_branch" if -f "./.legit/inherit_relation/$target_branch" or die;
+	my $previous_father = "";
+	open READFATHER, '<', "./.legit/father_list/$target_branch" if -f "./.legit/father_list/$target_branch" or die;
+	$previous_father = <READFATHER>;
+	chomp $previous_father;
+	close READFATHER;
+	unlink "./.legit/father_list/$target_branch" if -f "./.legit/father_list/$target_branch" or die;
+	while ($previous_father ne 'null') {
+		open IN, '<', "./.legit/inherit_relation/$previous_father" if -f "./.legit/inherit_relation/$previous_father" or die;
+		open TMPOUT, '>', "./.legit/.tmptmptmp" or die;
+		while ($readline=<IN>) {
+			chomp $readline;
+			if ($readline ne $target_branch) {
+				print TMPOUT "$readline\n";
+			}
+		}
+		close IN;
+		close TMPOUT;
+		copy("./.legit/.tmptmptmp", "./.legit/inherit_relation/$previous_father");
+		unlink "./.legit/.tmptmptmp" or die;
+		open READFATHER, '<', "./.legit/father_list/$previous_father" or die;
+		$previous_father = <READFATHER>;
+		chomp $previous_father;
+		close READFATHER;
+	}
+	# testing
+
+	print "Deleted branch '$target_branch'\n";
+}
+

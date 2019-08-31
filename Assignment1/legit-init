@@ -1,0 +1,53 @@
+#!/bin/dash
+
+# if no argument given, init the current directory
+# if give any number of parameters, echo "usage: legit-init"
+
+if (test "$#" -eq 0)
+then
+	if (test -d ".legit")
+	then
+		# check the existence of the .legit repository
+		echo "legit-init: error: .legit already exists" >&2
+		exit 1
+	else
+		# create repository
+		mkdir ".legit"
+		cd ".legit"
+		# create directories
+		mkdir "data"
+		mkdir "index"
+		mkdir "lastest_files"
+		cd lastest_files
+		touch master
+		cd ..
+		mkdir "deleted_files"
+		cd deleted_files
+		touch master
+		cd ..
+		mkdir "commit_log"
+		cd commit_log
+		touch master
+		cd ..
+		echo 0 > next_ver
+		echo master > head
+		echo master > branch_list
+		mkdir "base"
+		cd base
+		mkdir "master"
+		cd ..
+		mkdir "inherit_relation"
+		cd inherit_relation
+		touch master
+		cd ..
+		mkdir "father_list"
+		cd father_list
+		echo null >master
+		cd ..
+		echo "Initialized empty legit repository in .legit"
+	fi
+else
+	# wrong parameter format, show the usage message
+	echo "usage: legit-init" >&2
+	exit 1
+fi

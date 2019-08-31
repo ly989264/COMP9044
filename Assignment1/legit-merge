@@ -1,0 +1,1184 @@
+#!/usr/bin/perl -w
+
+use File::Copy::Recursive qw(dircopy);
+
+
+# define function to copy files
+sub copy {
+	my ($source_path, $target_path) = @_;
+	# print "--$source_path\n";
+	open SOURCE, '<', "$source_path" or die "cannot open source file in copy function\n";
+	open TARGET, '>', "$target_path" or die "cannot open target file in copy function\n";
+	while (<SOURCE>) {
+		print TARGET;
+	}
+	close SOURCE;
+	close TARGET;
+}
+
+
+sub combine_log {
+	# combine to log files
+	# the parameters are: target_logfile, source_logfile
+	# return the reference to a hash
+	my ($targetfile, $sourcefile) = @_;
+	my %log = ();
+	open IN, '<', "$targetfile" or die;
+	while (<IN>) {
+		chomp;
+		/^(.*?) (.*)$/;
+		$log{$1} = $2;
+	}
+	close IN;
+	open IN, '<', "$sourcefile" or die;
+	while (<IN>) {
+		chomp;
+		/^(.*?) (.*)$/;
+		$log{$1} = $2;
+	}
+	close IN;
+	return \%log;
+}
+
+
+sub find_lcs {
+	# find the longest common substring of two strings
+	# the parameters are two references of lists
+	# use dynamic programming
+	my ($ref_s1, $ref_s2) = @_;
+	my @list1 = @$ref_s1;
+	my @list2 = @$ref_s2;
+	my $tmp_len = 0;
+	my @result_list = ();
+	# have to use index to get the LCS
+	my $length1 = @list1;
+	my $length2 = @list2;
+	foreach $i (0..$length1-1) {
+		$flag = 0;
+		@lcs=();
+		foreach $j ($i..$length1-1) {
+			foreach $k ($flag..$length2-1) {
+				if ($list1[$j] eq $list2[$k]) {
+					push @lcs, $list1[$j];
+					$flag = $k + 1;
+				}
+			}
+		}
+		if (@lcs > $tmp_len) {  # what if equal???
+			$tmp_len = @lcs;
+			@result_list = @lcs;
+		}
+	}
+	return \@result_list;
+}
+
+
+sub find_seq {
+	# find the sequence of two lists
+	# the parameters are references of three lists: flist1, flist2, LCS_list
+	my ($ref_s1, $ref_s2, $ref_lcs) = @_;
+	my @flist1 = @$ref_s1;
+	my @flist2 = @$ref_s2;
+	my @lcs_list = @$ref_lcs;
+	# print "@lcs_list\n";
+	my $length1 = @flist1;
+	my $length2 = @flist2;
+	my $length_lcs = @lcs_list;
+	my @dseq_1 = ();
+	my @dseq_2 = ();
+	# need to use index
+	my $i_flag = 0;
+	my $j_flag = 0;
+	my $next_i = 0;
+	foreach $lcs_index (0..$length_lcs-1) {
+		# print "lcs_list: $lcs_list[$lcs_index]\n";
+		$i_tmp = -1;
+		$j_tmp = -1;
+		foreach $i ($i_flag..$length1-1) {
+			next if $flist1[$i] ne $lcs_list[$lcs_index];
+			if ($lcs_index < $length_lcs-1 and $lcs_list[$lcs_index + 1] eq $lcs_list[$lcs_index]) {
+				# match the first directly
+				$i_tmp = $i;
+				$i_flag = $i +1;
+				# print "match from v1, $i_tmp\n";
+				last;
+			}
+			if ($i < $length1-1 and $flist1[$i + 1] eq $flist1[$i]) {
+				# two possibilities, but how to represent?
+				$i_tmp = $i;
+				$i_flag = $i + 1;
+				# print "match from v2, $i_tmp\n";
+				last;
+			}
+			$i_tmp = $i;
+			$i_flag = $i +1;
+			last;
+		}
+		foreach $j ($j_flag..$length2-1) {
+			next if $flist2[$j] ne $lcs_list[$lcs_index];
+			if ($lcs_index < $length_lcs-1 and $lcs_list[$lcs_index + 1] eq $lcs_list[$lcs_index]) {
+				# match the first directly
+				$j_tmp = $j;
+				$j_flag = $j +1;
+				last;
+			}
+			if ($j < $length2-1 and $flist2[$j + 1] eq $flist2[$j]) {
+				# two possibilities, but how to represent?
+				$j_tmp = $j;
+				$j_flag = $j +1;
+				last;
+			}
+			$j_tmp = $j;
+			$j_flag = $j + 1;
+			last;
+		}
+		while ($i_tmp ne '-1' and $i_tmp > $next_i) {
+			push @dseq_1, $next_i;
+			push @dseq_2, -5;
+			$next_i++;
+		}
+		if ($i_tmp ne '-1' and j_tmp ne '-1') {
+			push @dseq_1, $i_tmp;
+			push @dseq_2, $j_tmp;
+			$next_i++;
+		}
+	}
+	if ($#dseq_1 < $#flist1) {
+		foreach ($#dseq_1+1..$#flist1) {
+			push @dseq_1, $flist1[$_];
+			push @dseq_2, -5;
+		}
+	}
+	# print "-@dseq_1\n";
+	# print "-@dseq_2\n";
+	my $prev = -1;
+	my @result_seq = ();
+	# what if I do not distinguish delete and modify
+	foreach (0..$#dseq_1) {
+		# $_ is the index
+		if ($dseq_2[$_] eq '-5'){
+			push @result_seq, 0;
+			push @result_seq, 1;
+			if ($_ < $#dseq_1 and $dseq_2[$_+1] == $prev+1) {
+				next;
+			}
+			$prev++;
+			next;
+		}
+		if ($dseq_2[$_] == $prev + 1) {
+			push @result_seq, 0;
+			push @result_seq, 0;
+			$prev++;
+			next;
+		}
+		push @result_seq, 2;
+		push @result_seq, 0;
+		$prev = $dseq_2[$_];
+	}
+	# if add in the end
+	if ($prev < $#flist2) {
+		push @result_seq, 2;
+	} else {
+		push @result_seq, 0;
+	}
+	# # if deleted in the end
+	# if ($#result_seq != $#flist1 * 2 + 1) {
+	# 	my $times = ($#flist1 * 2 + 1 - $#result_seq)/2;
+	# 	foreach (0..$times-1) {
+	# 		push @result_seq, 1;
+	# 		push @result_seq, 0;
+	# 	}
+	# }
+	# print "-@result_seq\n";
+	return (\@result_seq, \@dseq_1, \@dseq_2);
+}
+
+
+sub analyse_seqs {
+	# analyse the pattern
+	# the parameters are references of two seq lists
+	my ($ref_s1, $ref_s2) = @_;
+	my @seq1 = @$ref_s1;
+	my @seq2 = @$ref_s2;
+
+	# test the interference of two seqs
+	# again, use the index because I want to find the elements of the similar positions
+	foreach (0..$#seq1) {
+		# $_ is the index
+		if ($seq1[$_] != 0 and $seq2[$_] != 0) {
+			# cannot merge
+			# print "Port 1, $_\n";
+			return 1;
+		}
+		if ($_ < $#seq1 and $seq1[$_] != 0 and $seq2[$_ + 1] != 0) {
+			# cannot merge
+			# print "Port 2\n";
+			return 1;
+		}
+		if ($_ < $#seq1-1 and $seq1[$_] == 1 and $seq2[$_ + 2] == 1) {
+			# cannot merge
+			# print "Port 3\n";
+			return 1;
+		}
+	}
+	foreach (0..$#seq2) {
+		# $_ is the index
+		if ($_ < $#seq2 and $seq2[$_] != 0 and $seq1[$_ + 1] != 0) {
+			# cannot merge
+			# print "Port 4\n";
+			return 1;
+		}
+		if ($_ < $#seq2-1 and $seq2[$_] == 1 and $seq1[$_ + 2] == 1) {
+			# cannot merge
+			# print "Port 5\n";
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
+sub get_merge_file {
+	# get the merge file
+	# need to pass the analyse_seqs function first
+	# the parameters are ref_to_list1, ref_to_list2, ref_to_list3, ref_to_seq12, ref_to_seq13, ref_to_seq12_1, 2, 13_1, 2
+
+	my ($ref_l1, $ref_l2, $ref_l3, $ref_s1, $ref_s2, $ref_seq12_1, $ref_seq12_2, $ref_seq13_1, $ref_seq13_2) = @_;
+	my @list1 = @$ref_l1;
+	my @list2 = @$ref_l2;
+	my @list3 = @$ref_l3;
+	my @seq1 = @$ref_s1;
+	my @seq2 = @$ref_s2;
+	my @seq12_1 = @$ref_seq12_1;
+	my @seq12_2 = @$ref_seq12_2;
+	my @seq13_1 = @$ref_seq13_1;
+	my @seq13_2 = @$ref_seq13_2;
+	# print "@list1\n";
+	# print "@list2\n";
+	# print "@list3\n";
+	# print "@seq12_1\n";
+	# print "@seq12_2\n";
+	# print "@seq13_1\n";
+	# print "@seq13_2\n";
+	# print "@seq1\n";
+	# print "@seq2\n";
+
+
+	my @result = ();
+	my $current_position = 0;
+	foreach (0..$#seq1) {
+		# $_ is the index of the sequence
+		# if want to get index of the list, need to convert
+		if ($seq1[$_] == 0 and $seq2[$_] == 0 and $_ % 2 == 0) {
+			# even, do nothing
+			next;
+		}
+		if ($seq1[$_] == 0 and $seq2[$_] == 0 and $_ % 2 == 1) {
+			# odd, add to the result list
+			push @result, $list1[($_ - 1) / 2];
+			next;
+		}
+		if ($seq1[$_] == 1) {
+			# modified or deleted
+			$current_position = ($_ - 1) / 2;
+			if ($current_position == 0) {
+				if ($seq12_2[1] == 0) {
+					# position 0 delete
+					# do nothing and continue
+					next;
+				} else {
+					# position 0 modified
+					# add the new position 0
+					$last_index = $seq12_2[1];
+					foreach $data_index (0..$last_index-1) {
+						push @result, $list2[$data_index];
+					}
+				}
+			} elsif ($current_position == $#list1) {
+				if ($seq12_2[$#list1-1] == $#list2) {
+					# position delete
+					# do nothing and continue
+					next;
+				} else {
+					# position modified
+					# add the new position
+					$first_index = $seq12_2[$current_position-1];
+					foreach $data_index ($first_index+1..$#list2) {
+						push @result, $list2[$data_index];
+					}
+				}
+			} else {
+				$first_index = $seq12_2[$current_position-1];
+				$last_index = $seq12_2[$current_position+1];
+				foreach $data_index ($first_index+1..$last_index-1) {
+					push @result, $list2[$data_index];
+				}
+			}
+		}
+		if ($seq2[$_] == 1) {
+			# modified or deleted
+			$current_position = ($_ - 1) / 2;
+			if ($current_position == 0) {
+				if ($seq13_2[1] == 0) {
+					# position 0 delete
+					# do nothing and continue
+					next;
+				} else {
+					# position 0 modified
+					# add the new position 0
+					$last_index = $seq13_2[1];
+					foreach $data_index (0..$last_index-1) {
+						push @result, $list3[$data_index];
+					}
+				}
+			} elsif ($current_position == $#list1) {
+				if ($seq13_2[$#list1-1] == $#list3) {
+					# position delete
+					# do nothing and continue
+					next;
+				} else {
+					# position modified
+					# add the new position
+					$first_index = $seq13_2[$current_position-1];
+					foreach $data_index ($first_index+1..$#list3) {
+						push @result, $list3[$data_index];
+					}
+				}
+			} else {
+				$first_index = $seq13_2[$current_position-1];
+				$last_index = $seq13_2[$current_position+1];
+				foreach $data_index ($first_index+1..$last_index-1) {
+					push @result, $list3[$data_index];
+				}
+			}
+		}
+		if ($seq1[$_] == 2) {
+			# add new items
+			if ($_ == 0) {
+				$last_index = $seq12_2[0];
+				foreach $data_index (0..$last_index-1) {
+					push @result, $list2[$data_index];
+				}
+			} elsif ($_ == $#seq1) {
+				$first_index = $seq12_2[$_ / 2 - 1];
+				foreach $data_index ($first_index+1..$#list2) {
+					push @result, $list2[$data_index];
+				}
+			} else {
+				$first_index = $seq12_2[$_ / 2 - 1];
+				$last_index = $seq12_2[$_ / 2];
+				foreach $data_index ($first_index+1..$last_index-1) {
+					push @result, $list2[$data_index];
+				}
+			}
+		}
+		if ($seq2[$_] == 2) {
+			# add new items
+			if ($_ == 0) {
+				$last_index = $seq13_2[0];
+				foreach $data_index (0..$last_index-1) {
+					push @result, $list3[$data_index];
+				}
+			} elsif ($_ == $#seq2) {
+				$first_index = $seq13_2[$_ / 2 - 1];
+				foreach $data_index ($first_index+1..$#list3) {
+					push @result, $list3[$data_index];
+				}
+			} else {
+				$first_index = $seq13_2[$_ / 2 - 1];
+				$last_index = $seq13_2[$_ / 2];
+				print "--$_\n";
+				foreach $data_index ($first_index+1..$last_index-1) {
+					push @result, $list3[$data_index];
+				}
+			}
+		}
+	}
+	return \@result;
+}
+
+
+sub diff_file {
+	# check whether two files are same or not
+	# the parameters are two file paths
+	my ($file1, $file2) = @_;
+	# print "$file1\n";
+	# print "$file2\n";
+	open FILE1, '<', "$file1" or die;
+	open FILE2, '<', "$file2" or die;
+	my @filelist1 = <FILE1>;
+	my @filelist2 = <FILE2>;
+	return 1 if $#filelist1 != $#filelist2;
+	foreach (0..$#filelist1) {
+		return 1 if $filelist1[$_] ne $filelist2[$_];
+	}
+	return 0;
+}
+
+
+sub check_same_commit {
+	# check whether files at two commits are same or not
+	# the parameters are two commitids
+	my ($commitid1, $commitid2) = @_;
+	my $commitloc1 = "./.legit/data/$commitid1";
+	my $commitloc2 = "./.legit/data/$commitid2";
+	my @filelist1 = glob("$commitloc1/*");
+	my @filelist2 = glob("$commitloc2/*");
+	my %realpath1 = ();
+	my %realpath2 = ();
+	foreach (@filelist1) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$realpath1{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$realpath1{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$commitid1/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$commitid1/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$realpath1{$1} = "./.legit/$2";
+			}
+		}
+	}
+	foreach (@filelist2) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$realpath2{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$realpath2{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$commitid2/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$commitid2/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$realpath2{$1} = "./.legit/$2";
+			}
+		}
+	}
+	my $length1 = keys %realpath1;
+	my $length2 = keys %realpath2;
+	# foreach (keys %realpath1) {
+	# 	print "$_, $realpath1{$_}\n";
+	# }
+	# print "\n";
+	# foreach (keys %realpath2) {
+	# 	print "$_, $realpath2{$_}\n";
+	# }
+	return 1 if $length1 != $length2;
+	foreach (keys %realpath1) {
+		if (! defined $realpath2{$_}) {
+			return 1;
+		}
+		if (diff_file($realpath1{$_}, $realpath2{$_}) == 1) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
+# check the existence of the .legit repository
+if (! -d "./.legit") {
+	print STDERR "legit-merge: error: no .legit directory containing legit repository exists\n";
+	exit 1;
+}
+
+
+# check the existence of the commit
+open NEXTVER, '<', './.legit/next_ver' or die "cannot open ./.legit/next_ver";
+$next_ver_num = <NEXTVER>;
+chomp $next_ver_num;
+close NEXTVER;
+if ($next_ver_num == 0) {
+	print STDERR "legit-merge: error: your repository does not have any commits yet\n";
+	exit 1;
+}
+
+
+# check the parameter format
+if (@ARGV == 1) {
+	if ($ARGV[0] =~ /^-/) {
+		print STDERR "usage: legit-merge <branch|commit> -m message\n";
+		exit 1;
+	} else {
+		print STDERR "legit-merge: error: empty commit message\n";
+		exit 1;
+	}
+}
+if (@ARGV != 3){
+	# number of parameter wrong
+	print STDERR "usage: legit-merge <branch|commit> -m message\n";
+	exit 1;
+}
+if ($ARGV[0] =~ /^-/) {
+	# wrong branch or commit format
+	print STDERR "usage: legit-merge <branch|commit> -m message\n";
+	exit 1;
+}
+if ($ARGV[1] ne '-m') {
+	# wrong message flag format
+	print STDERR "usage: legit-merge <branch|commit> -m message\n";
+	exit 1;
+}
+
+
+# get the configurations
+$commit_mode = 0;
+if ($ARGV[0] =~ /^\d+$/) {
+	$commit_mode = 1;
+}
+$message = $ARGV[2];
+
+
+if ($commit_mode == 0) {
+	# branch mode
+
+	# get the current branch and the target branch
+	open IN, '<', './.legit/head' or die "cannot open file ./.legit/head\n";
+	$current_branch = <IN>;
+	chomp $current_branch;
+	close IN;
+	$target_branch = $ARGV[0];
+
+	# check the existence of target_branch
+	open BRANCHLIST, '<', './.legit/branch_list' or die "cannot open ./.legit/branch_list\n";
+	$existence = 0;
+	while (<BRANCHLIST>) {
+		chomp;
+		if ($_ eq $target_branch) {
+			$existence = 1;
+			last;
+		}
+	}
+	close BRANCHLIST;
+	if ($existence == 0) {
+		print STDERR "legit-merge: error: unknown branch '$target_branch'\n";
+		exit 1;
+	}
+
+	# check the relation between two branches
+	if ($current_branch eq $target_branch) {
+		print "Already up to date\n";
+		exit 0;
+	}
+	
+	# get the base commit of two branches
+	open IN, '<', "./.legit/base/$current_branch/$target_branch/commitid" or die "cannot open file ./.legit/base/$current_branch/$target_branch/commitid\n";
+	$base_commitid = <IN>;
+	chomp $base_commitid;
+	close IN;
+	# print "$base_commitid\n";
+
+	# use the lastest commit of each branch
+	open IN, '<', "./.legit/commit_log/$current_branch" or die "cannot open file ./.legit/commit_log/$current_branch\n";
+	$tmp_line = '';
+	while (<IN>) {
+		chomp;
+		$tmp_line = $_;
+	}
+	close IN;
+	if ($tmp_line ne '' and $tmp_line =~ /^(\d+) .*?$/) {
+		$current_branch_commitid = $1;
+	}
+	open IN, '<', "./.legit/commit_log/$target_branch" or die "cannot open file ./.legit/commit_log/$target_branch\n";
+	$tmp_line = '';
+	while (<IN>) {
+		chomp;
+		$tmp_line = $_;
+	}
+	close IN;
+	if ($tmp_line ne '' and $tmp_line =~ /^(\d+) .*?$/) {
+		$target_branch_commitid = $1;
+	}
+
+	if ($target_branch_commitid == $current_branch_commitid and $target_branch_commitid == $base_commitid) {
+		print "Already up to date\n";
+		exit 0;
+	}
+
+	# special consideration
+	if (check_same_commit($target_branch_commitid, $base_commitid) == 0 and check_same_commit($current_branch_commitid, $base_commitid) == 0) {
+		if ($current_branch_commitid == $base_commitid) {
+			print "Fast-forward: no commit created\n";
+			# need to change the base commit to be target_branch_commitid
+			open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+			open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+			print OUT1 $target_branch_commitid;
+			print OUT2 $target_branch_commitid;
+			close OUT1;
+			close OUT2;
+			exit 0;
+		}
+		print "Already up to date\n";
+		open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+		open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+		print OUT1 $target_branch_commitid;
+		print OUT2 $target_branch_commitid;
+		close OUT1;
+		close OUT2;
+		exit 0;
+	}
+
+	# if the target branch has the same file as the base
+	if (check_same_commit($target_branch_commitid, $base_commitid) == 0) {
+		print "Already up to date\n";
+		my $ref_log = combine_log("./.legit/commit_log/$target_branch", "./.legit/commit_log/$current_branch");
+		my %log = %$ref_log;
+		open OUT, '>', "./.legit/commit_log/$current_branch" or die;
+		my @key_list = sort{$a <=> $b} keys %log;
+		foreach (@key_list) {
+			print OUT "$_ $log{$_}\n";
+		}
+		close OUT;
+		exit 0;
+	}
+
+
+	# print "$current_branch_commitid, $base_commitid\n";
+	# if the current branch has the same commit id as base
+	if ($current_branch_commitid == $base_commitid) {
+		print "Fast-forward: no commit created\n";
+		open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+		open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+		print OUT1 $target_branch_commitid;
+		print OUT2 $target_branch_commitid;
+		close OUT1;
+		close OUT2;
+		# for all children
+		open READINHERIT, '<', "./.legit/inherit_relation/$target_branch" if -f "./.legit/inherit_relation/$target_branch" or die;
+		while ($each_child=<READINHERIT>) {
+			chomp $each_child;
+			open OUT1, '>', "./.legit/base/$each_child/$current_branch/commitid" or die;
+			open OUT2, '>', "./.legit/base/$current_branch/$each_child/commitid" or die;
+			print OUT1 $target_branch_commitid;
+			print OUT2 $target_branch_commitid;
+			close OUT1;
+			close OUT2;
+		}
+		# also need to merge
+		# copy the commit_log of $target_branch to $current_branch (file)
+		copy("./.legit/commit_log/$target_branch", "./.legit/commit_log/$current_branch");
+		# copy the lastest_files of $target_branch to $current_branch (file)
+		copy("./.legit/lastest_files/$target_branch", "./.legit/lastest_files/$current_branch");
+		# update the working directory
+		@tar_list = glob("./.legit/data/$target_branch_commitid/*");
+		my %tar_hash = ();
+		foreach (@tar_list) {
+			if (/\.old$/) {
+				# .old file
+				open IN, '<', "$_" or die "cannot open the .old file\n";
+				while ($eachline=<IN>) {
+					chomp $eachline;
+					# print "---$eachline\n";
+					if ($eachline =~ /^(.*?) (.*?)$/) {
+						$tar_hash{$1} = "./.legit/$2";
+					}
+				}
+				close IN;
+			} else {
+				if (/^.*\/(.*?)$/) {
+					$tar_hash{$1} = $_;
+				}
+			}
+		}
+		if (-f "./.legit/data/$target_branch_commitid/.old") {
+			# .old file
+			open IN, '<', "./.legit/data/$target_branch_commitid/.old" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$tar_hash{$1} = "./.legit/$2";
+				}
+			}
+		}
+
+		foreach (keys %tar_hash) {
+			copy("$tar_hash{$_}", "./$_");
+		}
+		exit 0;
+	}
+
+	if (check_same_commit($current_branch_commitid, $base_commitid) == 0) {
+		# normal merge, with the message of committed as ...
+		open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+		open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+		print OUT1 $target_branch_commitid;
+		print OUT2 $target_branch_commitid;
+		close OUT1;
+		close OUT2;
+		# for all children
+		open READINHERIT, '<', "./.legit/inherit_relation/$target_branch" if -f "./.legit/inherit_relation/$target_branch" or die;
+		while ($each_child=<READINHERIT>) {
+			chomp $each_child;
+			open OUT1, '>', "./.legit/base/$each_child/$current_branch/commitid" or die;
+			open OUT2, '>', "./.legit/base/$current_branch/$each_child/commitid" or die;
+			print OUT1 $target_branch_commitid;
+			print OUT2 $target_branch_commitid;
+			close OUT1;
+			close OUT2;
+		}
+		# also need to merge
+		# combine the commit log of $target_branch and $current_branch to $current_branch
+		my $ref_log = combine_log("./.legit/commit_log/$target_branch", "./.legit/commit_log/$current_branch");
+		my %log = %$ref_log;
+		# copy the lastest_files of $target_branch to $current_branch
+		copy("./.legit/lastest_files/$target_branch", "./.legit/lastest_files/$current_branch");
+		# create new merge, which increment the nextver, and create new dir under data (copy from $target), and write to the commit log of $current_branch
+		open IN, '<', "./.legit/next_ver" or die;
+		$next_ver = <IN>;
+		chomp $next_ver;
+		close IN;
+		open OUT, '>', "./.legit/next_ver" or die;
+		$tmp_value = $next_ver + 1;
+		print OUT $tmp_value, "\n";
+		close OUT;
+		mkdir "./.legit/data/$next_ver";
+		dircopy("./.legit/data/$target_branch_commitid", "./.legit/data/$next_ver");
+		$log{$next_ver} = "$message";
+		open OUT, '>', "./.legit/commit_log/$current_branch" or die;
+		my @key_list = sort{$a <=> $b} keys %log;
+		foreach (@key_list) {
+			print OUT "$_ $log{$_}\n";
+		}
+		close OUT;
+		print "Committed as commit $next_ver\n";
+		# update the working directory
+		exit 0;
+	}
+
+	if (check_same_commit($current_branch_commitid, $target_branch_commitid) == 0) {
+		# normal merge, with the message of committed as ...
+		open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+		open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+		print OUT1 $target_branch_commitid;
+		print OUT2 $target_branch_commitid;
+		close OUT1;
+		close OUT2;
+		# for all children
+		open READINHERIT, '<', "./.legit/inherit_relation/$target_branch" if -f "./.legit/inherit_relation/$target_branch" or die;
+		while ($each_child=<READINHERIT>) {
+			chomp $each_child;
+			open OUT1, '>', "./.legit/base/$each_child/$current_branch/commitid" or die;
+			open OUT2, '>', "./.legit/base/$current_branch/$each_child/commitid" or die;
+			print OUT1 $target_branch_commitid;
+			print OUT2 $target_branch_commitid;
+			close OUT1;
+			close OUT2;
+		}
+		# for fathers
+		open READFATHER, '<', "./.legit/father_list/$target_branch" if -f "./.legit/father_list/$target_branch" or die;
+		$previous_father = <READFATHER>;
+		chomp $previous_father;
+		close READFATHER;
+		while ($previous_father ne 'null' and $previous_father ne "$current_branch") {
+			open OUT1, '>', "./.legit/base/$previous_father/$current_branch/commitid" or die;
+			open OUT2, '>', "./.legit/base/$current_branch/$previous_father/commitid" or die;
+			print OUT1 $target_branch_commitid;
+			print OUT2 $target_branch_commitid;
+			close OUT1;
+			close OUT2;
+			open READFATHER, '<', "./.legit/father_list/$previous_father" if -f "./.legit/father_list/$previous_father" or die;
+			$previous_father = <READFATHER>;
+			chomp $previous_father;
+			close READFATHER;
+		}
+		# also need to merge
+		# combine the commit_log of $target_branch and $current_branch to $current_branch
+		my $ref_log = combine_log("./.legit/commit_log/$target_branch", "./.legit/commit_log/$current_branch");
+		my %log = %$ref_log;
+		# created new merge, which increment the nextver, and create new dir under data, also write to the commit log of $current_branch
+		open IN, '<', "./.legit/next_ver" or die;
+		$next_ver = <IN>;
+		chomp $next_ver;
+		close IN;
+		open OUT, '>', "./.legit/next_ver" or die;
+		$tmp_value = $next_ver + 1;
+		print OUT $tmp_value, "\n";
+		close OUT;
+		mkdir "./.legit/data/$next_ver";
+		dircopy("./.legit/data/$target_branch_commitid", "./.legit/data/$next_ver");
+		$log{$next_ver} = "$message";
+		open OUT, '>', "./.legit/commit_log/$current_branch" or die;
+		my @key_list = sort{$a <=> $b} keys %log;
+		foreach (@key_list) {
+			print OUT "$_ $log{$_}\n";
+		}
+		close OUT;
+		print "Committed as commit $next_ver\n";
+		# update the working directory
+		exit 0;
+	}
+
+	# here, no two branches are the same
+	# normal merge here
+
+	# get file hash -- current
+	@current_list = glob("./.legit/data/$current_branch_commitid/*");
+	my %current_hash = ();
+	foreach (@current_list) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$current_hash{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$current_hash{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$current_branch_commitid/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$current_branch_commitid/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$current_hash{$1} = "./.legit/$2";
+			}
+		}
+	}
+
+	# get file hash -- target
+	@target_list = glob("./.legit/data/$target_branch_commitid/*");
+	my %target_hash = ();
+	foreach (@target_list) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$target_hash{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$target_hash{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$target_branch_commitid/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$target_branch_commitid/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$target_hash{$1} = "./.legit/$2";
+			}
+		}
+	}
+
+	# get file hash -- base
+	@base_list = glob("./.legit/data/$base_commitid/*");
+	my %base_hash = ();
+	foreach (@base_list) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$base_hash{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$base_hash{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$base_commitid/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$base_commitid/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$base_hash{$1} = "./.legit/$2";
+			}
+		}
+	}
+	
+
+	# print the three hashes
+	# foreach (keys %base_hash) {
+	# 	print "$_, $base_hash{$_}\n";
+	# }
+	# foreach (keys %target_hash) {
+	# 	print "$_, $target_hash{$_}\n";
+	# }
+	# foreach (keys %current_hash) {
+	# 	print "$_, $current_hash{$_}\n";
+	# }
+
+	open IN, '<', "./.legit/next_ver" or die;
+	$next_ver = <IN>;
+	chomp $next_ver;
+	close IN;
+	@error_file_list = ();
+	@rmrm_file_list = ();
+	@auto_list = ();
+
+	# compare and merge files
+	# can directly push files in the index and use legit-commit
+
+	foreach $file (keys %base_hash) {
+		if (defined $target_hash{$file} and defined $current_hash{$file}) {
+			# 1 1 1 mode
+			my $file1 = "$base_hash{$file}";
+			my $file2 = "$target_hash{$file}";
+			my $file3 = "$current_hash{$file}";
+			my @file1 = ();
+			my @file2 = ();
+			my @file3 = ();
+			open IN, '<', "$file1" or die "cannot open $file1\n";
+			while (<IN>) {
+				chomp;
+				push @file1, $_;
+			}
+			close IN;
+
+			open IN, '<', "$file2" or die "cannot open $file2\n";
+			while (<IN>) {
+				chomp;
+				push @file2, $_;
+			}
+			close IN;
+
+			open IN, '<', "$file3" or die "cannot open $file3\n";
+			while (<IN>) {
+				chomp;
+				push @file3, $_;
+			}
+			close IN;
+
+			# testing
+			# print "*****************\n";
+			my $ref_r12 = &find_lcs(\@file1, \@file2);
+			my $ref_r13 = &find_lcs(\@file1, \@file3);
+			my @r12 = @$ref_r12;
+			my @r13 = @$ref_r13; 
+			# print "r12: @r12\n";
+			# print "r13: @r13\n";
+			my ($ref_res12, $ref_seq12_1, $ref_seq12_2) = &find_seq(\@file1, \@file2, \@r12);
+			my ($ref_res13, $ref_seq13_1, $ref_seq13_2) = &find_seq(\@file1, \@file3, \@r13);
+			my @res12 = @$ref_res12;
+			my @res13 = @$ref_res13;
+			my @seq12_1 = @$ref_seq12_1;
+			my @seq12_2 = @$ref_seq12_2;
+			my @seq13_1 = @$ref_seq13_1;
+			my @seq13_2 = @$ref_seq13_2;
+			my @result = ();
+			# print "---@res12\n";
+			# print "---@res13\n";
+			# print "---@seq12_1\n";
+			# print "---@seq12_2\n";
+			# print "---@seq13_1\n";
+			# print "---@seq13_2\n";
+			my $pattern_res = 0;
+			$pattern_res = &analyse_seqs(\@res12, \@res13);
+			# print "$pattern_res\n";
+			# print "^^^@res12\n";
+			# print "^^^@res13\n";
+			if ($pattern_res == 0) {
+				my $ref_result = &get_merge_file(\@file1, \@file2, \@file3, \@res12, \@res13, \@seq12_1, \@seq12_2, \@seq13_1, \@seq13_2);
+				@result = @$ref_result;
+			} else {
+				push @error_file_list, $file;
+				# print "000 mode: $file\n";
+				# print "$pattern_res\n";
+			}
+			open OUT, ">", "./.legit/index/$file" or die;
+			foreach (@result) {
+				print OUT $_, "\n";
+			}
+			close OUT;
+			# check the difference
+			if (diff_file($file1, $file2)==1 and diff_file($file1, $file3)==1) {
+				push @auto_list, $file;
+			}
+		}
+		if (defined $target_hash{$file} and ! defined $current_hash{$file}) {
+			# 1 1 0 mode
+			push @error_file_list, $file;
+			# print "110 mode: $file\n";
+		}
+		if (! defined $target_hash{$file} and defined $current_hash{$file}) {
+			# 1 0 1 mode
+			push @error_file_list, $file;
+			# print "101 mode, $file\n";
+		}
+		if (! defined $target_hash{$file} and ! defined $current_hash{$file}) {
+			# 1 0 0 mode
+			# rm the file
+			open OUT, '>>', "./.legit/index/.rmrm" or die;
+			print OUT "$file\n";
+			push @rmrm_file_list, $file;
+			close OUT;
+		}
+	}
+
+	foreach $file (keys %target_hash) {
+		if (! defined $base_hash{$file} and defined $current_hash{$file}) {
+			# 0 1 1 mode
+			# print "$target_hash{$file}, $current_hash{$file}\n";
+			if (diff_file("$target_hash{$file}", "$current_hash{$file}") == 0) {
+				copy("$target_hash{$file}", "./.legit/index/$file");
+			} else {
+				push @error_file_list, $file;
+			}
+		}
+		if (! defined $base_hash{$file} and ! defined $current_hash{$file}) {
+			# 0 1 0 mode
+			copy("$target_hash{$file}", "./.legit/index/$file");
+		}
+	}
+
+	foreach $file (keys %current_hash) {
+		if (! defined $base_hash{$file} and ! defined $target_hash{$file}) {
+			# 0 0 1 mode
+			# do nothing here
+			next;
+		}
+	}
+
+	if ($#error_file_list >= 0) {
+		print STDERR "legit-merge: error: These files can not be merged:\n";
+		foreach (sort @error_file_list) {
+			print STDERR "$_\n";
+		}
+		foreach (glob("./.legit/index/*")) {
+			unlink $_;
+		}
+		unlink "./.legit/index/.rmrm" if -f "./.legit/index/.rmrm";
+		exit 1;
+	}
+
+	foreach (sort @auto_list) {
+		print "Auto-merging $_\n";
+	}
+
+	# commit
+	print `legit-commit -m "$message"`;
+
+	# need to take these files to the working directory
+	@new_list = glob("./.legit/data/$next_ver/*");
+	my %new_hash = ();
+	foreach (@new_list) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp $eachline;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$new_hash{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$new_hash{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$next_ver/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$next_ver/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp $eachline;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$new_hash{$1} = "./.legit/$2";
+			}
+		}
+	}
+
+	foreach (keys %new_hash) {
+		copy("$new_hash{$_}", "./$_");
+	}
+
+	foreach (@rmrm_file_list) {
+		unlink "$_";
+	}
+
+
+	# merge log
+	my $ref_log = combine_log("./.legit/commit_log/$target_branch", "./.legit/commit_log/$current_branch");
+	my %log = %$ref_log;
+	open OUT, '>', "./.legit/commit_log/$current_branch" or die;
+	foreach (sort keys %log) {
+		print OUT "$_ $log{$_}\n";
+	}
+	close OUT;
+
+	# update the base information
+	open OUT1, '>', "./.legit/base/$current_branch/$target_branch/commitid" or die;
+	open OUT2, '>', "./.legit/base/$target_branch/$current_branch/commitid" or die;
+	print OUT1 $next_ver;
+	print OUT2 $next_ver;
+	close OUT1;
+	close OUT2;
+	# for all children
+	open READINHERIT, '<', "./.legit/inherit_relation/$target_branch" if -f "./.legit/inherit_relation/$target_branch" or die;
+	while ($each_child=<READINHERIT>) {
+		chomp $each_child;
+		open OUT1, '>', "./.legit/base/$each_child/$current_branch/commitid" or die;
+		open OUT2, '>', "./.legit/base/$current_branch/$each_child/commitid" or die;
+		print OUT1 $next_ver;
+		print OUT2 $next_ver;
+		close OUT1;
+		close OUT2;
+	}
+
+	# need to show the message of merging successfully
+
+
+
+	exit 0;
+}
+
+
+# commit mode

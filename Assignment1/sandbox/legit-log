@@ -1,0 +1,40 @@
+#!/bin/dash
+
+
+# check the existence of the .legit repository
+if ! test -d ".legit"
+then
+	echo "legit-log: error: no .legit directory containing legit repository exists"
+	exit 1
+fi
+
+
+# assume if .legit directory exists, then the index and data subdirectory also exist
+
+if (test $# -ne 0)
+then
+	echo "usage: legit-log"
+	exit 1
+fi
+
+
+# pwd is the working directory
+
+
+current_branch=`head -n 1 ./.legit/head`
+
+next_ver_num=`head -n 1 ./.legit/next_ver`
+
+
+# if there is no commit yet in this repository, raise the error and exit
+if (test "$next_ver_num" -eq 0)
+then
+	# there is no commit yet
+	echo "legit-log: error: your repository does not have any commits yet"
+	exit 1
+fi
+
+
+# get the log file, reverse the order and print out
+commit_file_path="./.legit/commit_log/$current_branch"
+tac "$commit_file_path"

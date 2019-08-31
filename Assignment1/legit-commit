@@ -1,0 +1,171 @@
+#!/bin/dash
+
+
+# check the existence of the .legit repository
+if (! test -d ".legit")
+then
+	echo "legit-commit: error: no .legit directory containing legit repository exists" >&2
+	exit 1
+fi
+
+
+# assume if .legit directory exists, then the index and data subdirectory also exist
+
+
+# pwd is the working directory
+
+
+a_flag=0
+current_branch=`head -n 1 ./.legit/head`
+
+
+# check the format
+if (test "$1" = '-a')
+then
+	# existence of -a
+	if (test "$#" -eq 3 && test "$2" = '-m')
+	then
+		a_flag=1
+	else
+		echo "usage: legit-commit [-a] -m commit-message" >&2
+		exit 1
+	fi
+else
+	if (test "$#" -ne 2 || test "$1" != '-m')
+	then
+		echo "usage: legit-commit [-a] -m commit-message" >&2
+		exit 1
+	fi
+fi
+
+
+if (test $a_flag -eq 1)
+then
+	# -a mode
+
+	# for each file in index that has different version of working directory, need to copy from working directory to index
+	for each_file_index in ./.legit/index/*
+	do
+		filename_index=`echo "$each_file_index" | sed -E 's/^.*\/(.*?)$/\1/'`
+		if (test -f "./$filename_index")
+		then
+			diff "$each_file_index" "./$filename_index" >/dev/null
+			if (test $? -ne 0)
+			then
+				cp "./$filename_index" "./.legit/index/"
+			fi
+		fi
+	done
+
+	# lastest_files of current branch: ./.legit/lastest_files/$current_branch
+	cat "./.legit/lastest_files/$current_branch" |
+	while read line
+	do
+		filename=`echo "$line" | cut -d' ' -f1`
+		filepath=`echo "$line" | cut -d' ' -f2`
+		if (! test -f "./$filename")
+		then
+			# the file in the working directory is deleted
+			# add this file to .rmrm
+			echo "$filename" >> ./.legit/index/.rmrm
+		else
+			# check whether two files are different or not
+			diff "./.legit/$filepath" "./$filename" >/dev/null
+			if (test $? -ne 0)
+			then
+				# two files are different
+				cp "./$filename" "./.legit/index/"
+			fi
+		fi
+	done
+	message="$3"
+else
+	message="$2"
+fi
+
+
+# if the index directory is empty, means nothing to commit
+lines_in_index=`ls -a ./.legit/index | wc -l`
+if (test "$lines_in_index" -eq 2) # consider the existence of . and ..
+then
+	echo "nothing to commit"
+	exit 0
+fi
+
+
+# do the normal commit
+
+# get the current commit id
+next_ver_num=`head -n 1 ./.legit/next_ver`
+
+# write the next commit id to the next_ver file
+echo $(($next_ver_num + 1)) > ./.legit/next_ver
+
+# write the commit log info to commit_log
+echo "$next_ver_num $message" >> "./.legit/commit_log/$current_branch"  # may be need to reverse the order of the content of this file
+
+# create the directory under the data directory
+mkdir "./.legit/data/$next_ver_num"
+
+# mv all visible files (except the .rmrm file) from index to the new-created directory
+ls ./.legit/index/ |
+while read sourcefilename
+do
+	mv "./.legit/index/$sourcefilename" "./.legit/data/$next_ver_num/"
+done
+
+lastest_files_B="./.legit/lastest_files/$current_branch"
+if (! test -f './.legit/index/.rmrm')  # if there is no .rmrm file, create an empty one to simplify analysis
+then
+	touch ./.legit/index/.rmrm
+fi
+rmrm_file_B="./.legit/index/.rmrm"
+if (! test -f './.legit/index/.cached')  # if there is no .cached file, create an empty one to simplify analysis
+then
+	touch ./.legit/index/.cached
+fi
+cached_file_B="./.legit/index/.cached"
+
+# inherit the file from the last version of commit of that branch, and updating the lastest_files file of that branch
+ls "./.legit/data/$next_ver_num/" |
+while read datafilename
+do
+	data_file=`egrep "$datafilename " "$lastest_files_B"`
+	if (test "$data_file" = '')
+	then
+		echo "$datafilename ./.legit/data/$next_ver_num/$datafilename" >>"$lastest_files_B"
+	fi
+done
+lastest_files_tmp="./.legit/lastest_files/tmp"
+touch "$lastest_files_tmp"
+cat "$lastest_files_B" |
+while read lastestline
+do
+	filename=`echo "$lastestline" | cut -d' ' -f1`
+	filepath=`echo "$lastestline" | cut -d' ' -f2`
+	if (test `egrep "^$filename$" "$cached_file_B"`)
+	then
+		# do nothing and continue
+		continue
+	fi
+	if (! test `egrep "^$filename$" "$rmrm_file_B"`)
+	then
+		# the file is not contained in the .rmrm file
+		if (test -f "./.legit/data/$next_ver_num/$filename")
+		then
+			# the file is contained in the /data/commitid/
+			echo "$filename ./data/$next_ver_num/$filename" >>"$lastest_files_tmp"
+		else
+			# the file is old file
+			echo "$filename $filepath" >>"$lastest_files_tmp"
+			echo "$filename $filepath" >>"./.legit/data/$next_ver_num/.old"
+		fi
+	else
+		echo "$filename" >>"./.legit/deleted_files/$current_branch"
+	fi
+done
+rm "$lastest_files_B"
+mv "$lastest_files_tmp" "$lastest_files_B"
+rm "./.legit/index/.rmrm"
+rm "./.legit/index/.cached"
+echo "Committed as commit $next_ver_num"

@@ -1,0 +1,13 @@
+a b c d | a c d | a x b c d
+a b c d | a c d | a b d
+a | a b | a b c
+a | a b c | a b
+a b c d e f | a c x d e f y | z b c d f
+a b c d | a x b c d | a y b c d
+a b c d | a x b c d | a y c d
+a b c d | a x b c d | a x c d
+a b | a c | d b
+a b c | a c c | a b b
+a b c | a x c | a b y
+0 1 2 3 4 5 | a 1 b 3 c 5 | 0 1 2 3 4 x
+0 1 2 3 4 5 | 0 1 a 3 4 5 | 0 1 2 b 4 5

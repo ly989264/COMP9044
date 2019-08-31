@@ -1,0 +1,18 @@
+#!/bin/sh
+cp ./frontend/src/*.js backup
+cp ./frontend/index.html backup
+cp ./frontend/styles/*.css backup
+
+echo "Copied files to backup directory"
+
+scp ./diary.txt z5190675@login.cse.unsw.edu.au:~/Desktop/COMP9044/Assignment2/ass2/
+
+scp ./frontend/src/*.js z5190675@login.cse.unsw.edu.au:~/Desktop/COMP9044/Assignment2/ass2/frontend/src/
+
+scp ./frontend/index.html z5190675@login.cse.unsw.edu.au:~/Desktop/COMP9044/Assignment2/ass2/frontend/
+
+scp ./frontend/styles/*.css z5190675@login.cse.unsw.edu.au:~/Desktop/COMP9044/Assignment2/ass2/frontend/styles/
+
+echo "Copied files to remote CSE server"
+
+ssh z5190675@login.cse.unsw.edu.au

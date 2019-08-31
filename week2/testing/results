@@ -1,0 +1,8 @@
+#!/bin/sh
+echo -n "Next file: "
+while read filename
+do
+	cat < "$filename" >> results
+	echo -n "Next file: "
+done
+hello

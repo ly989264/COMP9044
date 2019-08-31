@@ -1,0 +1,17 @@
+html {
+    background-color: bisque;
+}
+
+p {
+    font-family: sans-serif;
+    font-size: 1.2em;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+#image {
+    margin-left: 150px;
+    border-style: groove;
+    border-color: cadetblue;
+    border-width: 10px;
+}

@@ -1,0 +1,146 @@
+#!/bin/dash
+
+
+# check the existence of the .legit repository
+if (! test -d "./.legit")
+then
+    echo "legit-status: error: no .legit directory containing legit repository exists"
+    exit 1
+fi
+
+
+# check whether the repository has commits yet
+next_ver_num=`head -n 1 ./.legit/next_ver`
+
+if (test "$next_ver_num" -eq 0)
+then
+    echo "legit-status: error: your repository does not have any commits yet"
+    exit 1
+fi
+
+
+# configurations
+current_branch=`head -n 1 ./.legit/head`
+dir_path="./"  # path
+rep_path="./.legit/lastest_files/$current_branch"  # file
+ind_path="./.legit/index"  # path
+
+
+# compare the existence and content of files in the current directory, repository, and index folder
+# to determine the status of the file
+cut -d' ' -f1 "$rep_path" |
+while read file_rep
+do
+    if (test -f "$dir_path/$file_rep")
+    then
+        if (test -f ./.legit/index/.cached && test `egrep "^$file_rep$" "./.legit/index/.cached"`)
+        then
+            # untracked
+            echo "$file_rep - untracked" >>./.legit/.statusout
+            continue
+        fi
+
+        if (test -f "$ind_path/$file_rep")
+        then
+            diff "$dir_path/$file_rep" "$ind_path/$file_rep" >/dev/null
+            if (test $? -ne 0)
+            then
+                # file changed, different changes staged for commit
+                echo "$file_rep - file changed, different changes staged for commit" >>./.legit/.statusout
+            else
+                # file changed, changes stages for commit
+                echo "$file_rep - file changed, changes staged for commit" >>./.legit/.statusout
+            fi
+        else
+            source_path=`egrep "$file_rep " $rep_path | cut -d' ' -f2`
+            if (test "$source_path" = '')  # debug use
+            then
+                # debug use, should not print out
+                echo "something wrong with source path"
+                exit 1
+            fi
+            diff "$dir_path/$file_rep" "./.legit/$source_path" >/dev/null
+            if (test $? -ne 0)
+            then
+                # file changed, changes not staged for commit
+                echo "$file_rep - file changed, changes not staged for commit" >>./.legit/.statusout
+            else
+                # same as repo
+                echo "$file_rep - same as repo" >>./.legit/.statusout
+            fi
+        fi
+    else
+        if (test -f "$ind_path/$file_rep")
+        then
+            # file deleted, different changes staged for commit
+            echo "$file_rep - file deleted, different changes staged for commit" >>./.legit/.statusout
+        else
+            # file deleted and deleted
+            if (test -f ./.legit/index/.rmrm)
+            then
+                if (test `egrep "^$file_rep$" "./.legit/index/.rmrm"`)
+                then
+                    # deleted
+                    echo "$file_rep - deleted" >>./.legit/.statusout
+                else
+                    # file deleted
+                    echo "$file_rep - file deleted" >>./.legit/.statusout
+                fi
+            else
+                # file deleted
+                echo "$file_rep - file deleted" >>./.legit/.statusout
+            fi
+        fi
+    fi
+done
+
+
+# compare the existence and content of files in the current directory, repository, and index folder
+# to determine the status of the file
+ls "$dir_path" |
+while read file_dir
+do
+    if (test -d "$file_dir")
+    then
+        continue
+    fi
+    source_path=`egrep "$file_dir " $rep_path | cut -d' ' -f1`
+    if (test "$source_path" = '')
+    then
+        if (test -f "$ind_path/$file_dir")
+        then
+            # added to index
+            echo "$file_dir - added to index" >>./.legit/.statusout
+        else
+            # untracked
+            echo "$file_dir - untracked" >>./.legit/.statusout
+        fi
+    fi
+done
+
+
+# compare the existence and content of files in the current directory, repository, and index folder
+# to determine the status of the file
+ls "$ind_path" |
+while read file_ind
+do
+    source_path=source_path=`egrep "$file_ind " $rep_path`
+    if (test "$source_path" = '')
+    then
+        if (! test -f "$dir_path/$file_ind")
+        then
+            # added to index
+            echo "$file_ind - added to index" >>./.legit/.statusout
+        fi
+    fi
+done
+
+
+# sort the status and show them out
+if (! test -f ./.legit/.statusout)
+then
+    # create the .statusout tmp file for convenience
+    touch ./.legit/.statusout
+fi
+cat ./.legit/.statusout | sort
+rm ./.legit/.statusout

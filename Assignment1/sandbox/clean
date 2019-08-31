@@ -1,0 +1,26 @@
+#!/bin/sh
+
+######cleanup######
+rm -rf .legit
+######cleanup######
+
+######initstart######
+
+./legit-init
+echo a >a
+echo b >>a
+echo c >>a
+echo d >>a
+./legit-add a
+./legit-commit -m initial
+./legit-branch b1
+./legit-checkout b1
+echo a >a
+./legit-commit -a -m fromb1
+echo b >>a
+echo c >>a
+echo d >>a
+./legit-commit -a -m from-b1
+./legit-checkout master
+./legit-merge b1 -m try
+

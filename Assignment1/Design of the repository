@@ -1,0 +1,235 @@
+Design of the repository
+
+Each directory and file in the repository should be created after the first run of ./legit-init and every rerun of ./legit-init should never modify the repository again.
+
+structure of repository:
+	//desk        directory used to store the "desktop" files for each branch, that is, whenever changing branches, save the current files in the desk of the old branch and load the files from the new branch to the real file space(directory)
+	index		directory used to store the copy of files added using command legit-add after the last commit, and this should be global
+	data		directory used to store the copy of files of each commit version, this should be particular to branches
+	lastest_files    file that stores the path of the latest version of each file in the repository, this should also be particular to branches
+	commit_log    the commit log, this should be public before the creation of branch, and if a branch is created, should be particular to each branch, until merge happens and copy the merged branch to merging branch
+	next_ver    the next commit version, this should be glocal, no matter the branch
+
+
+Note that it seems that each branch shares the index space
+
+Note: it seems that if there is no commit yet, you cannot switch branches!
+
+So the detailed structure of repository should be:
++ .legit
+	//+ desk
+		+ master (in which stores the "desktop" files of that branch)
+		+ b1
+		+ b2
+		...
+	+ index (in which stores the index files)
+		a.txt
+		.rmrm
+		...
+	+ data (in which stores the files submitted)
+		+ 0
+			files
+			also contains a pointer file
+		+ 1
+		+ 2
+		...
+	+ lastest_files
+		master
+		b1
+		b2
+		...
+	+ commit_log
+		master (this is the file)
+		b1
+		b2
+		...
+	next_ver
+	head (contains master, b1 or b2) (is it possible to store it as a number?)
+
+
+add
+	add the file to the index, and if the file is exactly the same (this means the content, not the last-modified timestamp) as the last version of that file in the directory, should not add it to the index.
+	To solve this, also use a lastest_files (can use this as a file rather than a directory, and it simply contains the filepath to the latest version of each file stored in the repository, for example, if the file named a.txt is committed in the commit 1 to the directory, the latest_files file should contain a line of a.txt ./data/1/a.txt to indicate that the last version of a.txt in the repository is stored in .legit/data/1/a.txt, and whenever the program need to add another a.txt file to the repository, the program need to compare these two a.txt files. If no a.txt contained in the lastest_files file, it means that no a.txt is stored in the repository, thus can safely add it to the index. So the correct order is: check the existence of a.txt => check the difference between two a.txt files.) in the directory of .legit to track the last version of each file.
+	another possible situation is that add the same file again before the commit, I think this should be okay because the latter can simply overwrite the former.
+
+data format in latest_version file:
+	filename filepath(relative to the directory the file stored)
+	e.g.
+	a.txt ./.legit/data/0/a.txt
+	(in which data is the directory that stores all committed files, and 0 is the commit number)
+
+
+Note: when there is no commit in the repository, the legit-show will raise the error of "legit-show: error: your repository does not have any commits yet", even if there are files in the index and you are using legit-show :filename (no matter the filename exists in index or not)
+After commiting the first commit, while using legit-show :filename, if the file in the index, then show the content of the file in the index, else if the file in the repository, then show the content of the last version of the file in the repository, else it means that the file has never been added to the index, nor committed, so it will raise the error of "legit-show: error: 'filename' not found in index"
+but but but, if the lastest version of the file is deleted, then it cannot be shown via legit-show :filename, but can only using certain commit number!!!
+
+Note: whenever using legit-add, if you are adding two files and either one of these files does not exist, then the other file cannot be added successfully as well.
+
+
+About branch: new:
+it seems that when you modify the file and not commit it, all branches could sense that!
+but if you commit it, then all other branches except the branch that commit it could not see it
+but the above two lines may be only valid if after creating new branches, the branches does not commit anything or the two files are exactly the same (so here should be all committed files are exactly the same) (is it possible to mark this a special flag?) (Note: modify here means changing the file content, delete the file manually, delete the file via legit-rm)
+When the committed files are not same for someones, then it will raise the error of "legit-checkout: error: Your changes to the following files would be overwritten by checkout:\nfilename"
+so i don't think there is necessary to keep the desk directory in the repository, can simply use lastest_files of different branch to manage that
+After switching branches, need to use the lastest_files of the new branch to restore the desktop, true!
+
+Create a file call branch_list that stores all branches!
+
+for the delete mode:
+	if the branch does not exist, raise the error of "legit-branch: error: branch 'branchname' does not exist"
+	and it seems that no need to worry about the condition of delete the current branch (for example, you are in branch b1 and you want to delete branch b1)
+	cannot delete master, it will raise the error of "legit-branch: error: can not delete branch 'master'"
+	if the branch to delete has unmerged commits, it should raise the error of "legit-branch: error: branch 'branchname' has unmerged changes"
+	if delete the branch successfully, it should raise the message of "Deleted branch 'branchname'"
+
+but what is unmerged changes for two branches?
+I think it should be the branch that want to delete has commits that do not exist in the current branch
+
+About checkout:
+	At the very first, if there is no .legit repository, raise the error of "legit-checkout: error: no .legit directory containing legit repository exists"
+	if there is no commit yet, raise the error of "legit-checkout: error: your repository does not have any commits yet"
+	first, if the number of parameters is not equal to 1, it will raise the error of "usage: legit-checkout <branch>"
+	then, if the parameter is not a valid branch, raise the error of "legit-checkout: error: unknown branch 'x'"
+	then, if the parameter is the current branch, show the message of "Already on 'branchname'" but not raise the error (so the exit code should be 0)
+	so at this point, the parameter should be a valid branch
+	it seems that once two branches have different versions of commits on certain file, then if this file of the working directory is different from the version in the repository or there is a version of this file in the index, it cannot checkout to different branch, and will raise the error of "legit-checkout: error: Your changes to the following files would be overwritten by checkout:\nfilename"
+	but the above rule does not apply to different file, that is, for example, in two branches, file a has different version in the repository, but b not (so b is either having the same version or does not exist), then it does not matter whether b is in the index of not, it can switch branches freely
+	(but if rm and not add, it is okay, if legit-rm, then not okay)
+
+
+About merge
+for the lastest_files files of two branches, for every file in that, merge (algorithm?)
+
+
+file deleted and legit-rm:
+if file is deleted (not via legit-rm) by users manually, and the delete is not committed yet, then it seems that all branches could sense that, and this is discussed in the last section (About branch: new:)
+so if want to deleted the file manually, simply delete it manually
+but if want to use legit-rm to delete the file, need to delete it in the lastest_files
+(Note after legit-rm, need to commit -- this is consistent with rm add commit!!!)!
+to do the rm, I want to use a .rmrm file in index, which contains the file need to be removed in the lastst_files file.
+
+but but but, in the commit, when dealing with the rm operations, need to not only delete the file in the lastest_files, but also delete the data (and in the "old" file) in the data/commitId/.
+
+I think after legit-rm, should remove the line of that file in the lastest_files, but add that line in the deleted_files
+
+
+legit-status:
+possible status of files:
+	file changed, different changes staged for commit  (change->add->change)
+	file changed, changes staged for commit (change->add)
+	file changed, changes not staged for commit (change)
+	file deleted (delete manually)
+	file deleted, different changes staged for commit
+	deleted (delete via legit-rm)
+	same as repo (no change, same as last version)
+	added to index
+	untracked (not add yet)
+So what legit-status actually do:
+	(in a certain branch)
+	from the lastest_files, we can get all the files, mark as list_rep
+	from the current working directory, we can get all the files committed, mark as list_dir
+	from the index, we can get all the files added, mark as list_ind
+	we compare these two lists
+	so the condition is:
+		if file in both three lists:
+			if file in list_dir is identical to file in list_ind:
+				file changed, changes stages for commit
+			if file in list_dir is different with file in list_ind:
+				file changed, different changes staged for commit
+		if file in list_rep and list_dir:
+			if file in list_rep is different with in list_dir:
+				file changed, changes not staged for commit
+			if file in list_rep is identical to in list_dir:
+				same as repo
+		if file in list_rep but no in list_dir:
+			if file in list_ind:
+				file deleted, different changes staged for commit
+			if file not in list_ind:
+				file deleted (deleted manually)
+		if file not in list_rep and not in list_dir:
+			(here assume that in legit-rm operation, delete the file from lastest_files as well)
+			deleted (deleted via legit-rm)
+		if file not in list_rep but in list_dir and list_ind:
+			added to index
+		if file not in list_rep and not in list_dir but in list_ind:
+			added to index
+		if file not in list_rep, not in list_ind, but in list_dir:
+			untracked
+it seems that no matter how many parameters given to legit-status and what these parameters are
+error messages of legit-status:
+	if there is no .legit repository in the current working directory, then raise "legit-status: error: no .legit directory containing legit repository exists"
+	if there is no commit yet (even there are files already in index directory but havn't be committed yet), raise "legit-status: error: your repository does not have any commits yet"
+
+
+
+so:
+different types of commit
+	add a new file and commit it
+		the file is stored in the index, so:
+			get the commitId from the next_ver file, and update the next_ver file
+			get the current branch from the head file
+			open the certain branch file in the commit_log directory, write the commit log info
+			open the data directory, create the new directory, and mv the files from index to it, also check the last commit of this branch, compare it and store all other files in the old file
+			if there is .rmrm file in the index, rm the file in the old file, and in the lastest_files file
+			for the new inserted or modified or removed file, change its lastest position in the lastest_files file
+			the compare of the lastest_files, /data/commitid/, and .rmrm files
+				for each file in /data/commitid/
+					if that file does not exists in the lastest_files
+						add that file in the lastest_files
+				for each file in lastest_files
+					if that file exist in .rmrm
+						rm that file from the lastest_files
+					if that file exist in /data/commitid/
+						update the filepath in lastest_files
+					if that file does not exist in both /data/commitid/ and .rmrm
+						add that file and path in old file
+	modify a file and commit it
+		i think this should be the same as the first one
+	delete a file using manually rm and add, and commit it
+		i think this should be the same as the first one
+	delete a file using legit-rm, and commit it
+		i think this should be the same as the first one
+
+about commit -a
+	does not care whether there are files in the index
+	for each file in lastest_files file of that branch, compare the file in the working directory:
+		if two files are identical, do nothing
+		if two files have different content, add that file to the index
+		if there is no corresponding file in lastest_files, do nothing
+		if there is no corresponding file in the working directory, add that file to .rmrm file in index
+	then do the normal commit
+
+about legit-show
+	error messages of legit-show
+		if the number of parameters is not 1, then raise the error of usage
+		if the only parameter starts with -, then raise the error of usage
+		if the parameter has the wrong format (that is, not in format of :filename or commitid:filename), raise the error of invalid object
+		if the parameter has the correct format:
+			if in the format of :filename, and the file does not contains in the repository nor the index, raise the error of "legit-show: error: 'filename' not found in index"
+			if in the format of commitid:filename, and the commitid does not exist in the repository, raise the error of "legit-show: error: unknown commit 'commitid'"
+			if in the format of commitid:filename, and the commitid exists in the repository, but the file does not shown in that commit, raise the error of "legit-show: error: 'filename' not found in commit commitid"
+	different types of legit-show:
+		legit-show 0:a
+			just find the 
+		legit-show :a
+			the index mode just looks for the lastest_files of that branch and the index for the file a, if the file does not exist, then raise the error of "legit-show: error: 'filename' not found in index"
+	Note: It seems that legit-show will not be affected by different branches, that is, the b1 branch can still use legit-show commitid:a to find the version of file a committed from other branches. It means that the implementation of legit-show should read the file from the data directory
+
+About rm and legit-rm:
+	first, the status of a file after rm or legit-rm:
+		after rm:
+			file deleted
+		after rm and add:
+			deleted
+		after legit-rm:
+			deleted
+		after commit:
+			no status
+	legit-rm --cached
+		change the status to untracked immediately, but still need to commit?
+
+rm: delete the file in the current directory
+(rm + ) add: add the file in .rmrm file
+legit-rm --force: delete the file in the current directory, add the file in .rmrm file (and delete the file in index)
+legit-rm: check whether the file is in index, if so raise the error, else delete the file in the current directory and add the file in .rmrm file

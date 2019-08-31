@@ -1,0 +1,9 @@
+0 1 2 3 4 5 | a 1 b 3 4 5 | 0 1 2 3 4 x
+0 1 2 3 4 5 | a 1 b 3 4 5 | 0 1 2 3 x 5
+a b c d | a x c d | a b c y
+a b c d | a x b c d | a b y c d z
+a b c d | a x b c d | a b y d z
+w a b c d e f | w a c x d e f y | z a b c d f
+a b c d | a x b c d | a b x d x
+a b c d | a c d | a b c f
+a b c d | a c d | a b c

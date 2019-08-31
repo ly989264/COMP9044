@@ -1,0 +1,96 @@
+#!/bin/dash
+
+
+# checking the existence of the .legit repository
+if (! test -d ".legit")
+then
+	# the .legit directory not exist!
+	echo "legit-add: error: no .legit directory containing legit repository exists" >&2
+	exit 1
+fi
+
+
+# check whether - and -- exists in parameter, if so, echo the usage message
+for eachfile in "$@"
+do
+	if (test `echo "$eachfile" | egrep '^-+'`)
+	then
+		echo "usage: legit-add <filenames>" >&2
+		exit 1
+	fi
+done
+
+
+# for each file in parameters, check the existence
+for eachfile in "$@"
+do
+	if (! test -f "$eachfile")
+	then
+		# get the current branch
+		current_branch=`head -n 1 ./.legit/head`
+	
+		# get the latest version of $eachfile from the latest_files file
+		lastest_version_in_repository=`egrep "$eachfile " "./.legit/lastest_files/$current_branch"`
+		
+		if (test "$lastest_version_in_repository" != '')
+		then
+			# create a .rmrm file
+			# when dealing with .rmrm file in commit, simply delete the file in the lastest_files, and rm it from old
+			if (test -f "./.legit/index/.rmrm")
+			then
+				if (! test `egrep "$filename" "./.legit/index/.rmrm"`)  # avoid overwritting
+				then
+					echo "$eachfile" >> ./.legit/index/.rmrm
+				fi
+			else
+				echo "$eachfile" >> ./.legit/index/.rmrm
+			fi
+			# need to check whether there is same file in index
+			if (test -f "./.legit/index/$filename")
+			then
+				rm "./.legit/index/$filename"
+			fi
+		else
+			echo "legit-add: error: can not open '$eachfile'" >&2
+			# need to rm the .rmrm file to keep the consistency of the program
+			if (test -f "./.legit/index/.rmrm")
+			then
+				rm ./.legit/index/.rmrm
+			fi
+			exit 1
+		fi
+	fi
+done
+
+
+# pwd is the working directory
+
+
+for eachfile in "$@"
+do	
+	# check the existence of the files
+	if (! test -f "$eachfile")
+	then
+		continue
+	fi
+
+	# get the current branch
+	current_branch=`head -n 1 ./.legit/head`
+	
+	# get the latest version of $eachfile from the latest_files file
+	latest_version_in_repository=`egrep "$eachfile " "./.legit/lastest_files/$current_branch" | cut -d' ' -f2`
+	# need to check whether the filename already exists or not
+	if (test "$latest_version_in_repository" = '')
+	then
+		cp "$eachfile" "./.legit/index/"
+	else
+		# compare these two files using diff command
+		# if there is no difference between two files, there will be no output
+		diff "./.legit/$latest_version_in_repository" "$eachfile" >/dev/null
+		if (test $? -ne 0)
+		then
+			# two files are different
+			cp "$eachfile" "./.legit/index/"
+		fi
+	fi
+done

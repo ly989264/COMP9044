@@ -1,0 +1,120 @@
+sub diff_file {
+	# check whether two files are same or not
+	# the parameters are two file paths
+	my ($file1, $file2) = @_;
+	open FILE1, '<', "$file1" or die;
+	open FILE2, '<', "$file2" or die;
+	my @filelist1 = <FILE1>;
+	my @filelist2 = <FILE2>;
+	return 1 if $#filelist1 != $#filelist2;
+	foreach (0..$#filelist1) {
+		return 1 if $filelist1[$_] ne $filelist2[$_];
+	}
+	return 0;
+}
+
+
+sub check_same_commit {
+	# check whether files at two commits are same or not
+	# the parameters are two commitids
+	my ($commitid1, $commitid2) = @_;
+	my $commitloc1 = "./.legit/data/$commitid1";
+	my $commitloc2 = "./.legit/data/$commitid2";
+	my @filelist1 = glob("$commitloc1/*");
+	my @filelist2 = glob("$commitloc2/*");
+	my %realpath1 = ();
+	my %realpath2 = ();
+	foreach (@filelist1) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$realpath1{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$realpath1{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$commitid1/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$commitid1/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$realpath1{$1} = "./.legit/$2";
+			}
+		}
+	}
+	foreach (@filelist2) {
+		if (/\.old$/) {
+			# .old file
+			open IN, '<', "$_" or die "cannot open the .old file\n";
+			while ($eachline=<IN>) {
+				chomp;
+				# print "---$eachline\n";
+				if ($eachline =~ /^(.*?) (.*?)$/) {
+					$realpath2{$1} = "./.legit/$2";
+				}
+			}
+			close IN;
+		} else {
+			if (/^.*\/(.*?)$/) {
+				$realpath2{$1} = $_;
+			}
+		}
+	}
+	if (-f "./.legit/data/$commitid2/.old") {
+		# .old file
+		open IN, '<', "./.legit/data/$commitid2/.old" or die "cannot open the .old file\n";
+		while ($eachline=<IN>) {
+			chomp;
+			# print "---$eachline\n";
+			if ($eachline =~ /^(.*?) (.*?)$/) {
+				$realpath2{$1} = "./.legit/$2";
+			}
+		}
+	}
+	my $length1 = keys %realpath1;
+	my $length2 = keys %realpath2;
+	foreach (keys %realpath1) {
+		print "$_, $realpath1{$_}\n";
+	}
+	print "\n";
+	foreach (keys %realpath2) {
+		print "$_, $realpath2{$_}\n";
+	}
+	return 1 if $length1 != $length2;
+	foreach (keys %realpath1) {
+		if (! defined $realpath2{$_}) {
+			return 1;
+		}
+		if (diff_file($realpath1{$_}, $realpath2{$_}) == 1) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+if (check_same_commit(0,1) == 0) {
+	print "Same\n";
+} else {
+	print "Diff\n";
+}
+if (check_same_commit(0,2) == 0) {
+	print "Same\n";
+} else {
+	print "Diff\n";
+}
+if (check_same_commit(1,2) == 0) {
+	print "Same\n";
+} else {
+	print "Diff\n";
+}

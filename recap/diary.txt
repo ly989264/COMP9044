@@ -1,0 +1,13 @@
+Date	 | Start | Stop  | Activity | Comments
+24/06/19 | 09:35 | 14:00 | Coding   | legit-init
+27/06/19 | 17:00 | 22:00 | Design   | Design the structure of the repository
+27/06/19 | 22:00 | 23:30 | Coding   | legit-init and legit-add
+28/06/19 | 09:00 | 14:00 | Coding   | implement the legit-commit, legit-log, and legit-show
+29/06/19 | 11:30 | 12:05 | Debug    | debug the error of subset 0
+30/06/19 | 08:30 | 16:00 | Coding   | finish subset1
+01/07/19 | 12:00 | 14:00 | Coding   | Doing subset2, legit-branch
+04/07/19 | 09:00 | 12:00 | Coding   | Implement legit-branch and legit-checkout
+04/07/19 | 12:00 | 22:30 | Debug    | Debugging for legit-branch and legit-checkout, really tricky...
+08/07/19 | 09:00 | 22:00 | Coding   | Design and code for the algorithm that merges two files
+09/07/19 | 10:00 | 22:00 | Coding   | Design and code for the merge, not finished
+10/07/19 | 08:00 | 10:20 | Debug    | Debug the merge function
